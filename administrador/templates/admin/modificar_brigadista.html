@@ -1,0 +1,196 @@
+{% extends 'base_template.html' %}
+{% load staticfiles %}
+
+{% block breadcrumb %}
+    <li class="active">
+        <a href="#">Modificar Brigadistas</a>
+    </li>
+{% endblock %}
+
+{% block page-header %}
+    Lista de Brigadistas
+{% endblock %}
+
+{% block content %}
+    <table id="simple_table" class="table table-bordered table-hover">
+        <thead>
+            <th>Detalles</th>
+            <th class="detail-col">Nombres</th>
+            <th>Apellidos</th>
+            <th>Comunidad</th>
+            <th class="hidden-480">Region</th>
+        </thead>
+        <tbody>
+            {% for brigadista in lista_de_brigadistas %}
+                <tr class="main-row">
+                    <td class="center">
+                        <div class="action-buttons">
+                            <a href="#" class="green bigger-140 show-details-btn" title="Show Details">
+                                <i class="ace-icon fa fa-angle-double-down"></i>
+                                <span class="sr-only">Details</span>
+                            </a>
+                        </div>
+                    </td>
+                    <td>{{ brigadista.name }}</td>           
+                    <td>{{ brigadista.fields.apellido|safe }}</td>
+                    <td>{{ brigadista.fields.comunidad|safe }}</td>
+                    <td>{{ brigadista.fields.region|safe }}</td>
+                </tr>
+                <tr class="detail-row">
+                    <td colspan="8">
+                        <div class="table-detail">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-2">
+                                    <div class="text-center">
+                                        <img height="150" class="thumbnail inline no-margin-bottom" alt="Domain Owner's Avatar" src="{% static 'assets/images/avatars/profile-pic.jpg' %}" />
+                                        <br />
+                                        <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+                                            <div class="inline position-relative">
+                                                <a class="user-title-label" href="#">
+                                                    <i class="ace-icon fa fa-circle light-green"></i>
+                                                    &nbsp;
+                                                    <span class="white">{{ brigadista.name }}</span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-12 col-sm-7">
+                                    <div class="space visible-xs"></div>
+                                    {% csrf_token %}
+                                    <div class="profile-user-info profile-user-info-striped">
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Nombres </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="nombres" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.nombre|safe }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Apellido </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="apellidos" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.apellido|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Region </div>
+
+                                            <div class="profile-info-value">
+                                                <i class="fa fa-map-marker light-orange bigger-110"></i>
+                                                <span class="region" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.region|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Sector </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="sector" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.sector|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Comunidad </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="comunidad" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.comunidad|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Centro de Salud </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="centro_salud" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.centro_de_salud|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name" > N° de Cedula </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="cedula" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.cedula|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Escolaridad </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="escolaridades" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.escolaridad|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Ocupación </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="ocupaciones" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.ocupacion|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Función en el Sistema de Salud </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="funcion_sistema" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.funcion_en_el_sistema_de_salud|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Años de Servicio al Sistema de Salud </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="anios_sistema" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.anios_en_el_sistema_de_salud|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Celular Personal </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="celular_personal" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.celular_personal|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Celular Asignado </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="celular_asignado" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.celular_asignado|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Etnia </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="etnia" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.etnia|safe }}</span>
+                                            </div>
+                                        </div>
+
+                                        
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+                        </div>
+                    </td>
+        
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <div class="col-md-12 text-center">
+        <ul class="pagination" id="myPager"></ul>
+    </div>
+{% endblock %}
+
+{% block script %}
+
+<script src="{% static 'js/modificar_brigadista.js' %}"></script>
+{% endblock %}

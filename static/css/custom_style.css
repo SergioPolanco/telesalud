@@ -1,0 +1,28 @@
+.select2-selection__rendered{
+    display: none !important
+}
+
+div.pager {
+    text-align: center;
+    margin: 1em 0;
+}
+
+div.pager span {
+    display: inline-block;
+    width: 1.8em;
+    height: 1.8em;
+    line-height: 1.8;
+    text-align: center;
+    cursor: pointer;
+    background: #438EB9;
+    color: #fff;
+    margin-right: 0.5em;
+}
+
+div.pager span.active {
+    background: #666;
+}
+
+.text_left{
+    text-align: left!important
+}

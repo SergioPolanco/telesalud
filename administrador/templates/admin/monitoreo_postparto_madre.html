@@ -1,0 +1,235 @@
+{% extends 'base_template.html' %}
+{% load staticfiles %}
+
+{% block breadcrumb %}
+    <li class="active">
+        <a href="#">Monitoreo Postparto(madre)</a>
+    </li>
+{% endblock %}
+
+{% block page-header %}
+    Monitoreo Postparto(madre)
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-xs-12 col-sm-2">
+            <div class="text-center">
+                <img height="150" class="thumbnail inline no-margin-bottom" alt="Domain Owner's Avatar" src="{% static 'assets/images/avatars/profile-pic.jpg' %}" />
+                <br />
+                <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+                    <div class="inline position-relative">
+                        <a class="user-title-label" href="#">
+                            <i class="ace-icon fa fa-circle light-green"></i>
+                            &nbsp;
+                            <span class="white">{{ embarazada.name }}</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-7">
+            <div class="space visible-xs"></div>
+
+            <div class="profile-user-info profile-user-info-striped">
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Nombres </div>
+
+                    <div class="profile-info-value">
+                        <span class="nombres">{{ embarazada.fields.nombre|safe }}</span>
+                    </div>
+                </div>
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Apellido </div>
+
+                    <div class="profile-info-value">
+                        <span class="apellidos">{{ embarazada.fields.apellido|safe }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Region </div>
+
+                    <div class="profile-info-value">
+                        <i class="fa fa-map-marker light-orange bigger-110"></i>
+                        <span class="region">{{ embarazada.fields.region|safe }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Edad </div>
+
+                    <div class="profile-info-value">
+                        <span class="edad">{{ embarazada.fields.edad|safe }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Comunidad </div>
+
+                    <div class="profile-info-value">
+                        <span class="comunidad">{{ embarazada.fields.comunidad|safe }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Centro de Salud </div>
+
+                    <div class="profile-info-value">
+                        <span class="centro_salud">{{ embarazada.fields.centro_de_salud|safe }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> N° de Cedula </div>
+
+                    <div class="profile-info-value">
+                        <span class="cedula">{{ embarazada.fields.cedula|safe }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Semana de Embarazo </div>
+
+                    <div class="profile-info-value">
+                        <span class="semana_embarazo">{{ embarazada.fields.semana_de_embarazo|safe }}</span>
+                    </div>
+                </div>
+
+                <div class="profile-info-row">
+                    <div class="profile-info-name"> Etnia </div>
+
+                    <div class="profile-info-value">
+                        <span class="etnia">{{ embarazada.fields.etnia|safe }}</span>
+                    </div>
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-lg-7 col-lg-offset-2">
+            <form class="form-horizontal" name="form-nuevo-monitoreo" role="form">
+                {% csrf_token %}
+                <div class="row">
+                    <input type="hidden" name="nombre_embarazada" value="{{ embarazada.name }}"/>
+                    <div class="col-lg-4">
+                        <label class=" bolder blue">1). Hemorragia?</label>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_1" type="radio" class="ace radio_1" value="si">
+                                <span class="lbl"> Si</span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_1" type="radio" class="ace radio_1" value="no">
+                                <span class="lbl"> No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class=" bolder blue">2). Dolor fuerte en el vientre?</label>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_2" type="radio" class="ace radio_2" value="si">
+                                <span class="lbl"> Si</span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_2" type="radio" class="ace radio_2" value="no">
+                                <span class="lbl"> No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class=" bolder blue">3). Fiebre alta?</label>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_3" type="radio" class="ace radio_3" value="si">
+                                <span class="lbl"> Si</span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_3" type="radio" class="ace radio_3" value="no">
+                                <span class="lbl"> No</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <label class=" bolder blue">4). Secresion vaginal con mal olor?</label>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_4" type="radio" class="ace radio_4" value="si">
+                                <span class="lbl"> Si</span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_4" type="radio" class="ace radio_4" value="no">
+                                <span class="lbl"> No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <label class=" bolder blue">5). Ataques o convulciones?</label>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_5" type="radio" class="ace radio_5" value="si">
+                                <span class="lbl"> Si</span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_5" type="radio" class="ace radio_5" value="no">
+                                <span class="lbl"> No</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                    <label class=" bolder blue">6). La mujer quedo muy palida?</label>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_6" type="radio" class="ace radio_6" value="si">
+                                <span class="lbl"> Si</span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input name="radio_6" type="radio" class="ace radio_6" value="no">
+                                <span class="lbl"> No</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <div class="clearfix form-actions">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button class="btn btn-info" type="submit" id="btn-nuevo-brigadista">
+                            <i class="ace-icon fa fa-check bigger-110"></i>
+                            Guardar
+                        </button>
+
+                        &nbsp; &nbsp; &nbsp;
+                        <button class="btn" type="reset">
+                            <i class="ace-icon fa fa-undo bigger-110"></i>
+                            Limpiar
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+
+<script src="{% static 'js/monitoreo_postparto_madre.js' %}"></script>
+{% endblock %}
