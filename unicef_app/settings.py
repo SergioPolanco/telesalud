@@ -25,7 +25,7 @@ SECRET_KEY = '$fwtzs*bhhxrw*&v3lq1)$&b!1jlbc*@k)!&-j!0#@xj+28086'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "130.211.208.53"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "130.211.208.53", "104.154.196.212"]
 
 
 # Application definition
@@ -106,7 +106,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-ar'
 
 TIME_ZONE = 'UTC'
 
@@ -120,6 +120,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+LOGIN_URL = '/administrator/login/'
+LOGOUT_URL = '/administrator/logout/'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (

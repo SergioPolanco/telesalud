@@ -1,6 +1,8 @@
 $(document).ready(load)
 
 function load(){
+    $( "[href='/admin/agregar_brigadista/']" ).parent().addClass('active').parent().addClass('open');
+    $( "[href='/admin/agregar_brigadista/']" ).parent().parent().parent().addClass('active open hsub');
     $(document).on('submit', "form[name='form-nuevo-brigadista']", function(){
         
         if(validar_campos() == 0){

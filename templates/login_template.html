@@ -16,6 +16,7 @@
 
 		<!-- text fonts -->
 		<link rel="stylesheet" href="{% static 'assets/css/fonts.googleapis.com.css' %}" />
+		<link rel="stylesheet" href="{% static 'assets/css/jquery.gritter.min.css' %}" />
 
 		<!-- ace styles -->
 		<link rel="stylesheet" href="{% static 'assets/css/ace.min.css' %}" />
@@ -35,6 +36,8 @@
 		<script src="assets/js/html5shiv.min.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 		<![endif]-->
+		<script src="{% static 'assets/js/jquery-2.1.4.min.js' %}"></script>
+		<script src="{% static 'assets/js/jquery.gritter.min.js' %}"></script>
 	</head>
 
 	<body class="login-layout">
@@ -65,18 +68,19 @@
 
 											<div class="space-6"></div>
 
-											<form>
+											<form name="form-access" method="post" action="{% url 'login' %}">
+												{% csrf_token %}
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="Nombre de Usuario" />
+															<input type="text" name="username" class="form-control" placeholder="Nombre de Usuario" />
 															<i class="ace-icon fa fa-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Contraseña" />
+															<input type="password" name="password" class="form-control" placeholder="Contraseña" />
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
 													</label>
@@ -89,12 +93,35 @@
 															<span class="lbl"> Recuerdame</span>
 														</label>
 
-														<button type="button" class="width-35 pull-right btn btn-sm btn-primary">
+														<button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
 															<i class="ace-icon fa fa-key"></i>
 															<span class="bigger-110">Entrar</span>
 														</button>
 													</div>
-
+													{% if mensaje %}
+														<!--<br>-->
+														<!--<div class="alert alert-danger">-->
+														<!--	<button type="button" class="close" data-dismiss="alert">-->
+														<!--		<i class="ace-icon fa fa-times"></i>-->
+														<!--	</button>-->
+														<!--	<strong>-->
+														<!--		<i class="ace-icon fa fa-times"></i>-->
+														<!--		Error!-->
+														<!--	</strong>-->
+														<!--	{{ mensaje }}-->
+														<!--	<br>-->
+														<!--</div>-->
+														<script>
+															$.gritter.add({
+									                            // (string | mandatory) the heading of the notification
+									                            title: 'Error!',
+									                            // (string | mandatory) the text inside the notification
+									                            text: "{{ mensaje }}",
+									                            class_name: 'gritter-error' 
+									                        });
+														</script>
+													{% endif %}
+													
 													<div class="space-4"></div>
 												</fieldset>
 											</form>
@@ -245,7 +272,7 @@
 		<!-- basic scripts -->
 
 		<!--[if !IE]> -->
-		<script src="{% static 'assets/js/jquery-2.1.4.min.js' %}"></script>
+		
 
 		<!-- <![endif]-->
 

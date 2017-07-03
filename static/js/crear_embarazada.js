@@ -1,7 +1,8 @@
 $(document).ready(load)
 
 function load(){
-
+    $( "[href='/admin/agregar_embarazada/']" ).parent().addClass('active').parent().addClass('open');
+    $( "[href='/admin/agregar_embarazada/']" ).parent().parent().parent().addClass('active open hsub');
     $(document).on('submit', "form[name='form-nueva-embarazada']", function(){
         if(validar_campos()==0){
             var formData = new FormData( $( "form[name='form-nueva-embarazada']" )[0] );

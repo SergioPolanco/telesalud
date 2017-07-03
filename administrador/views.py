@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.views.generic import TemplateView
+from django.contrib.auth.decorators import login_required
 import requests 
 import json
 from django.http import HttpResponse
@@ -11,6 +12,7 @@ from django.core.urlresolvers import reverse
 from unicef_app.connect_to_rapidpro import connect_to_client, obtener_token_brigadistas, obtener_token_embarazadas
 # Create your views here.
 
+@login_required
 def dashboard(request):
     return render(request, 'admin/dashboard.html')
 

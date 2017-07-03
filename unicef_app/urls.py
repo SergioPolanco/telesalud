@@ -18,10 +18,15 @@ from django.contrib import admin
 from django.conf.urls import include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+
+admin.site.site_header = 'Administracion de Usuarios - Telesalud'
+
 urlpatterns = [
-    url(r'^', include('login.urls')),
+    url(r'^', include('administrador.urls')),
     url(r'^login', include('login.urls')),
-    url(r'^admin/', include('administrador.urls'))
+    url(r'^admin/', include('administrador.urls')),
+    url(r'^panel_administrador/', admin.site.urls)
+    
 ]
 
 urlpatterns += staticfiles_urlpatterns()

@@ -3,7 +3,8 @@ $(document).ready(load)
 var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
 
 function load(){
-    
+    $( "[href='/admin/modificar_brigadista/']" ).parent().addClass('active').parent().addClass('open');
+    $( "[href='/admin/modificar_brigadista/']" ).parent().parent().parent().addClass('active open hsub');
     $("#simple_table").each(function(){
         var currentPage = 0;
         var numPerPage = 10;
