@@ -79,5 +79,13 @@ function load(){
 }
 
 function validar_campos(){
-    return 0
+    var radio_length = ($('input[type=radio]:checked').size());
+    
+    if(radio_length == 9)
+    {
+        return 0
+    }
+    else{
+        return 1
+    }
 }

@@ -98,7 +98,7 @@
 								<!--<li class="divider"></li>-->
 
 								<li>
-									<a href="{% url 'logout' %}">
+									<a href="{% url 'login.logout' %}">
 										<i class="ace-icon fa fa-power-off"></i>
 										Salir
 									</a>
@@ -195,6 +195,14 @@
 							</li>
 
 						</ul>
+					</li>
+					<li class="">
+						<a href="{% url 'filtrarEmbarazadaView' %}">
+							<i class="menu-icon fa fa-filter" aria-hidden="true"></i>
+							<span class="menu-text"> Filtrar Embarazada </span>
+						</a>
+
+						<b class="arrow"></b>
 					</li>
 
 				</ul><!-- /.nav-list -->

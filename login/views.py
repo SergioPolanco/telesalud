@@ -1,15 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.conf import settings
 # Create your views here.
 
-# def login_render(request):
-#     return render(request, 'login/login.html')
-    
 
 def login_view(request):
     # Si el usuario esta ya logueado, lo redireccionamos a index_view
@@ -40,6 +36,5 @@ def login_view(request):
     
 
 def logout_view(request):
-    logout(request)
     print("entro al logout")
-    return redirect(reverse('loginView'))
+    

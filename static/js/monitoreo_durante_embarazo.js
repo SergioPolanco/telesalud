@@ -10,7 +10,7 @@ function load(){
             var res_radio_5 = $(".radio_5:checked").val();
             var res_radio_6 = $(".radio_6:checked").val();
             var res_radio_7 = $(".radio_7:checked").val();
-           
+            
             
             var formData = new FormData( $( "form[name='form-nuevo-monitoreo']" )[0] );
             formData.append("res_radio_1", res_radio_1)
@@ -20,6 +20,7 @@ function load(){
             formData.append("res_radio_5", res_radio_5)
             formData.append("res_radio_6", res_radio_6)
             formData.append("res_radio_7", res_radio_7)
+            
             
             $.ajax({
                 url : '/admin/embarazada_durante_embarazo/',
@@ -75,5 +76,13 @@ function load(){
 }
 
 function validar_campos(){
-    return 0
+    var radio_length = ($('input[type=radio]:checked').size());
+    
+    if(radio_length == 7)
+    {
+        return 0
+    }
+    else{
+        return 1
+    }
 }

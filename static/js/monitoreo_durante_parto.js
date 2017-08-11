@@ -2,6 +2,7 @@ $(document).ready(load)
 
 function load(){
     $(document).on('submit', "form[name='form-nuevo-monitoreo']", function(event){
+        
         if(validar_campos() == 0){
             var res_radio_1 = $(".radio_1:checked").val();
             var res_radio_2 = $(".radio_2:checked").val();
@@ -73,5 +74,14 @@ function load(){
 }
 
 function validar_campos(){
-    return 0
+    
+    var radio_length = ($('input[type=radio]:checked').size());
+    
+    if(radio_length == 6)
+    {
+        return 0
+    }
+    else{
+        return 1
+    }
 }

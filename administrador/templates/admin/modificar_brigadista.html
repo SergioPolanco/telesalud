@@ -115,6 +115,22 @@
                                                 <span class="cedula" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.cedula|safe }}</span>
                                             </div>
                                         </div>
+                                        
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name" > Sexo </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="sexo" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.sexo|safe }}</span>
+                                            </div>
+                                        </div>
+                                        
+                                         <div class="profile-info-row">
+                                            <div class="profile-info-name" > Fecha de Nacimiento </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="fecha_nacimiento" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.fecha_de_nacimiento|safe }}</span>
+                                            </div>
+                                        </div>
 
                                         <div class="profile-info-row">
                                             <div class="profile-info-name"> Escolaridad </div>

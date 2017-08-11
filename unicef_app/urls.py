@@ -23,7 +23,7 @@ admin.site.site_header = 'Administracion de Usuarios - Telesalud'
 
 urlpatterns = [
     url(r'^', include('administrador.urls')),
-    url(r'^login', include('login.urls')),
+    url(r'^login/', include('login.urls')),
     url(r'^admin/', include('administrador.urls')),
     url(r'^panel_administrador/', admin.site.urls)
     

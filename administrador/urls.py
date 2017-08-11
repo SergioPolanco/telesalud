@@ -11,6 +11,8 @@ urlpatterns = [
     url(r'^monitoreo_postparto_madre/(?P<id>[-\w]+)/$', views.monitoreo_postparto_madre, name='monitoreoPostpartoMadreView'),
     url(r'^monitoreo_postparto_hijo/(?P<id>[-\w]+)/$', views.monitoreo_postparto_hijo, name='monitoreoPostpartoHijoView'),
     url(r'^modificar_embarazada/$', views.modificar_embarazada, name='modificarEmbarazadaView'),
+    url(r'^filtrar_embarazada/$', views.vista_filtrar_embarazada, name='filtrarEmbarazadaView'),
+    url(r'^filtrar_embarazada_post/$', views.filtrar_embarazada, name='filtrar_embarazada_post'),
     url(r'^modificar_brigadista/$', views.modificar_brigadista, name = 'modificarBrigadistaView'),
     url(r'^embarazada_durante_embarazo/$', views.monitoreo_durante_embarazo_post.as_view()),
     url(r'^embarazada_comunidad/$', views.monitoreo_salida_comunidad_post.as_view()),

@@ -17,19 +17,48 @@ def dashboard(request):
     return render(request, 'admin/dashboard.html')
 
 ###################################################################
-
+@login_required
 def agregar_embarazada(request):
     return render(request, 'admin/agregar_embarazada.html')
 
-
+@login_required
 def modificar_embarazada(request):
     client = connect_to_client()
     lista_de_embarazadas = client.get_contacts(group=obtener_token_embarazadas())
+    query_list = [embarazada.name for embarazada in lista_de_embarazadas.all() if "alvarez" in embarazada.fields["apellido"].lower() ]
+    print(query_list)
     contexto = {
         'lista_de_embarazadas': lista_de_embarazadas.all()
     }
     return render(request, 'admin/modificar_embarazada.html', context = contexto)
 
+@login_required
+def vista_filtrar_embarazada(request):
+    return render(request, 'admin/filtrar_embarazada.html')
+    
+@login_required
+def filtrar_embarazada(request):
+    print("savsdav: {0}".format(request.POST.get('nombres')))
+    print([embarazada.fields for embarazada in filtrar(request.POST)])
+    return render(request, 'admin/filtrar_embarazada.html')
+
+
+def filtrar(argumentos):
+    client = connect_to_client()
+    lista_de_embarazadas = client.get_contacts(group=obtener_token_embarazadas()).all()
+    if argumentos.get("region"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["region"].lower() in x.fields["region"].lower(),
+                lista_de_embarazadas
+        )
+    if argumentos.get("nombres"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["nombres"].lower() in x.fields["nombre"].lower(),
+                lista_de_embarazadas
+        )
+    
+    return lista_de_embarazadas
+        
 class ajax_agregar_embarazada(TemplateView):
     def post(self, request, *args, **kwargs):
         if request.is_ajax() and request.method == "POST":
@@ -100,10 +129,10 @@ class ajax_actualizar_embarazadas(TemplateView):
             return HttpResponse(json.dumps(message), content_type =  "application/json")
             
 ##########################################################################################################################
-
+@login_required
 def agregar_brigadista(request):
     return render(request, 'admin/agregar_brigadista.html')
-
+@login_required
 def modificar_brigadista(request):
     client = connect_to_client()
     lista_de_brigadistas = client.get_contacts(group=obtener_token_brigadistas())
@@ -196,6 +225,10 @@ class ajax_actualizar_brigadista(TemplateView):
                 fields.update({'celular_personal': request.POST.get('celular_personal')})
             elif request.POST.get('etnia') is not None:
                 fields.update({'etnia': request.POST.get('etnia')})
+            elif request.POST.get('sexo') is not None:
+                fields.update({'sexo': request.POST.get('sexo')})
+            elif request.POST.get('fecha_nacimiento') is not None:
+                fields.update({'fecha_de_nacimiento': request.POST.get('fecha_nacimiento')})
             
             try:
                 client.update_contact(b_id, language=None, urns=None, fields=fields)
@@ -206,7 +239,7 @@ class ajax_actualizar_brigadista(TemplateView):
             return HttpResponse(json.dumps(message), content_type =  "application/json")
 
 ##########################################################################################################
-
+@login_required
 def monitoreo_durante_embarazo(request, id):
     client = connect_to_client()
     #client.create_broadcast(text="asdvsadva", contacts=["53eaed2e-6f76-4c11-b3b5-f2ea9ec139cc"])
@@ -244,7 +277,7 @@ class monitoreo_durante_embarazo_post(TemplateView):
 
 
 ##########################################################################################################
-
+@login_required
 def monitoreo_salida_comunidad(request, id):
     client = connect_to_client()
     embarazada = client.get_contacts(uuid=id)
@@ -269,7 +302,7 @@ class monitoreo_salida_comunidad_post(TemplateView):
             return HttpResponse(json.dumps(message), content_type =  "application/json")
 
 ##########################################################################################################
-
+@login_required
 def monitoreo_durante_parto(request, id):
     client = connect_to_client()
     embarazada = client.get_contacts(uuid=id)
@@ -304,7 +337,7 @@ class monitoreo_durante_parto_post(TemplateView):
 
 
 ##########################################################################################################
-
+@login_required
 def monitoreo_postparto_madre(request, id):
     client = connect_to_client()
     embarazada = client.get_contacts(uuid=id)
@@ -338,7 +371,7 @@ class monitoreo_postparto_madre_post(TemplateView):
             return HttpResponse(json.dumps(message), content_type =  "application/json")
 
 ##########################################################################################################
-
+@login_required
 def monitoreo_postparto_hijo(request, id):
     client = connect_to_client()
     embarazada = client.get_contacts(uuid=id)
