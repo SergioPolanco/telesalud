@@ -51,12 +51,96 @@ def filtrar(argumentos):
                 lambda x: argumentos["region"].lower() in x.fields["region"].lower(),
                 lista_de_embarazadas
         )
+    if argumentos.get("municipio"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["municipio"].lower() in x.fields["municipio"].lower(),
+                lista_de_embarazadas
+        )
+    if argumentos.get("centro_salud"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["centro_salud"].lower() in x.fields["centro_de_salud"].lower(),
+                lista_de_embarazadas
+        )
+    if argumentos.get("region"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["comunidad"].lower() in x.fields["comunidad"].lower(),
+                lista_de_embarazadas
+        )
     if argumentos.get("nombres"):
         lista_de_embarazadas = filter(
                 lambda x: argumentos["nombres"].lower() in x.fields["nombre"].lower(),
                 lista_de_embarazadas
         )
+    if argumentos.get("apellidos"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["apellidos"].lower() in x.fields["apellido"].lower(),
+                lista_de_embarazadas
+        )
+    if argumentos.get("cedula"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["cedula"].lower() == x.fields["cedula"].lower(),
+                lista_de_embarazadas
+        )
     
+    if argumentos.get("etnia"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["etnia"].lower() == x.fields["etnia"].lower(),
+                lista_de_embarazadas
+        )
+    
+    if argumentos.get("cedula"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["cedula"].lower() == x.fields["cedula"].lower(),
+                lista_de_embarazadas
+        )
+    
+    if argumentos.get("semana_embarazo_desde") and argumentos.get("semana_embarazo_hasta"):
+        semanas_de_embarazo_desde = argumentos.get("semana_embarazo_desde")
+        semanas_de_embarazo_hasta = argumentos.get("semana_embarazo_hasta")
+        print(semanas_de_embarazo_desde)
+        print(semanas_de_embarazo_hasta)
+        lista_de_embarazadas = filter(
+                lambda x: semanas_de_embarazo_desde <= x.fields["semana_de_embarazo"] <= semanas_de_embarazo_hasta,
+                lista_de_embarazadas
+        )
+    elif argumentos.get("semana_embarazo_desde") and not argumentos.get("semana_embarazo_hasta"):
+        semanas_de_embarazo_desde = argumentos.get("semana_embarazo_desde")
+        semanas_de_embarazo_hasta = argumentos.get("semana_embarazo_desde")
+        lista_de_embarazadas = filter(
+                lambda x: semanas_de_embarazo_desde <= x.fields["semana_de_embarazo"] <= semanas_de_embarazo_hasta,
+                lista_de_embarazadas
+        )
+    elif not argumentos.get("semana_embarazo_desde") and argumentos.get("semana_embarazo_hasta"):
+        semanas_de_embarazo_desde = argumentos.get("semana_embarazo_hasta")
+        semanas_de_embarazo_hasta = argumentos.get("semana_embarazo_hasta")
+        lista_de_embarazadas = filter(
+                lambda x: semanas_de_embarazo_desde <= x.fields["semana_de_embarazo"] <= semanas_de_embarazo_hasta,
+                lista_de_embarazadas
+        )
+    
+    if argumentos.get("edad_desde") and argumentos.get("edad_hasta"):
+        edad_desde = argumentos.get("edad_desde")
+        edad_hasta = argumentos.get("edad_hasta")
+        lista_de_embarazadas = filter(
+                lambda x:  edad_desde <= x.fields["edad"] <= edad_hasta,
+                lista_de_embarazadas
+        )
+    elif argumentos.get("edad_desde") and not argumentos.get("edad_hasta"):
+        edad_desde = argumentos.get("edad_desde")
+        edad_hasta = argumentos.get("edad_desde")
+        lista_de_embarazadas = filter(
+                lambda x:  edad_desde <= x.fields["edad"] <= edad_hasta,
+                lista_de_embarazadas
+        )
+    elif not argumentos.get("edad_desde") and argumentos.get("edad_hasta"):
+        edad_desde = argumentos.get("edad_hasta")
+        edad_hasta = argumentos.get("edad_hasta")
+        lista_de_embarazadas = filter(
+                lambda x:  edad_desde <= x.fields["edad"] <= edad_hasta,
+                lista_de_embarazadas
+        )
+        
+        
     return lista_de_embarazadas
         
 class ajax_agregar_embarazada(TemplateView):
