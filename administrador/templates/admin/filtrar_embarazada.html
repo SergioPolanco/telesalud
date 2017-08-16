@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content %}
-    <form class="form-horizontal" action="{% url 'filtrar_embarazada_post' %}" method="post" enctype="multipart/form-data" name="form-nueva-embarazada" role="form">
+    <form class="form-horizontal" action="{% url 'filtrarEmbarazadaView' %}" method="post" enctype="multipart/form-data" id="form-filtrar-embarazada" role="form">
         {% csrf_token %}
         <div class="row">
             <div class="col-md-3">
@@ -149,7 +149,13 @@
             <div class="col-md-offset-3 col-md-9">
                 <button class="btn btn-info" type="submit" id="btn-nueva-embarazada">
                     <i class="ace-icon fa fa-check bigger-110"></i>
-                    Guardar
+                    Filtrar
+                </button>
+                
+                &nbsp; &nbsp; &nbsp;
+                <button class="btn btn-success" type="button" id="btn_exportar_embarazadas">
+                    <i class="ace-icon fa fa-download bigger-110"></i>
+                    Exportar a Excel
                 </button>
     
                 &nbsp; &nbsp; &nbsp;
@@ -161,6 +167,145 @@
         </div>
     
     </form>
+    
+    {% if lista_de_embarazadas %}
+        <div class="row">
+            <div class="col-md-12">
+                <table id="simple_table" class="table table-bordered table-hover">
+                    <thead>
+                        <th>Detalles</th>
+                        <th class="detail-col">Nombres</th>
+                        <th>Apellidos</th>
+                        <th>Edad</th>
+                        <th class="hidden-480">Region</th>
+                    </thead>
+                    <tbody>
+                        {% for embarazada in lista_de_embarazadas %}
+                            <tr class="main-row">
+                                <td class="center">
+                                    <div class="action-buttons">
+                                        <a href="#" class="green bigger-140 show-details-btn" title="Show Details">
+                                            <i class="ace-icon fa fa-angle-double-down"></i>
+                                            <span class="sr-only">Details</span>
+                                        </a>
+                                    </div>
+                                </td>
+                                <td>{{ embarazada.name }}</td>           
+                                <td>{{ embarazada.fields.apellido|safe }}</td>
+                                <td>{{ embarazada.fields.edad|safe }}</td>
+                                <td>{{ embarazada.fields.region|safe }}</td>
+                            </tr>
+                            <tr class="detail-row">
+                                <td colspan="8">
+                                    <div class="table-detail">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-2">
+                                                <div class="text-center">
+                                                    <img height="150" class="thumbnail inline no-margin-bottom" alt="Domain Owner's Avatar" src="{% static 'assets/images/avatars/profile-pic.jpg' %}" />
+                                                    <br />
+                                                    <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+                                                        <div class="inline position-relative">
+                                                            <a class="user-title-label" href="#">
+                                                                <i class="ace-icon fa fa-circle light-green"></i>
+                                                                &nbsp;
+                                                                <span class="white">{{ embarazada.name }}</span>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+            
+                                            <div class="col-xs-12 col-sm-7">
+                                                <div class="space visible-xs"></div>
+                                                {% csrf_token %}
+                                                <div class="profile-user-info profile-user-info-striped">
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Nombres </div>
+            
+                                                        <div class="profile-info-value">
+                                                            <span class="nombres" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.nombre|safe }}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Apellido </div>
+            
+                                                        <div class="profile-info-value">
+                                                            <span class="apellidos" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.apellido|safe }}</span>
+                                                        </div>
+                                                    </div>
+            
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Region </div>
+            
+                                                        <div class="profile-info-value">
+                                                            <i class="fa fa-map-marker light-orange bigger-110"></i>
+                                                            <span class="region" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.region|safe }}</span>
+                                                        </div>
+                                                    </div>
+            
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Edad </div>
+            
+                                                        <div class="profile-info-value">
+                                                            <span class="edad" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.edad|safe }}</span>
+                                                        </div>
+                                                    </div>
+            
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Comunidad </div>
+            
+                                                        <div class="profile-info-value">
+                                                            <span class="comunidad" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.comunidad|safe }}</span>
+                                                        </div>
+                                                    </div>
+            
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Centro de Salud </div>
+            
+                                                        <div class="profile-info-value">
+                                                            <span class="centro_salud" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.centro_de_salud|safe }}</span>
+                                                        </div>
+                                                    </div>
+            
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> N° de Cedula </div>
+            
+                                                        <div class="profile-info-value">
+                                                            <span class="cedula" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.cedula|safe }}</span>
+                                                        </div>
+                                                    </div>
+            
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Semana de Embarazo </div>
+            
+                                                        <div class="profile-info-value">
+                                                            <span class="semana_embarazo" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.semana_de_embarazo|safe }}</span>
+                                                        </div>
+                                                    </div>
+            
+                                                    <div class="profile-info-row">
+                                                        <div class="profile-info-name"> Etnia </div>
+            
+                                                        <div class="profile-info-value">
+                                                            <span class="etnia" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.etnia|safe }}</span>
+                                                        </div>
+                                                    </div>
+            
+                                                    
+                                                </div>
+                                            </div>
+                                        
+                                        </div>
+                                    </div>
+                                </td>
+                    
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endif %}
 
 {% endblock %}
 

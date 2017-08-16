@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+import requests 
+import json
+import pandas as pd
+from StringIO import StringIO
+import xlsxwriter
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required
-import requests 
-import json
 from django.http import HttpResponse
 from temba_client.v2 import TembaClient
 from django.core.urlresolvers import reverse
@@ -34,13 +36,32 @@ def modificar_embarazada(request):
 
 @login_required
 def vista_filtrar_embarazada(request):
-    return render(request, 'admin/filtrar_embarazada.html')
-    
+    print(request.method)
+    if request.method == "GET":
+        return render(request, 'admin/filtrar_embarazada.html')
+    else:
+        lista_de_embarazadas = filtrar(request.POST)
+        contexto = {
+            'lista_de_embarazadas': lista_de_embarazadas
+        }
+        return render(request, 'admin/filtrar_embarazada.html', context = contexto)
+        
 @login_required
-def filtrar_embarazada(request):
-    print("savsdav: {0}".format(request.POST.get('nombres')))
-    print([embarazada.fields for embarazada in filtrar(request.POST)])
-    return render(request, 'admin/filtrar_embarazada.html')
+def exportar_embarazadas_a_excel(request):
+    if request.method == "POST":
+        data = [embarazada.fields for embarazada in filtrar(request.POST)]
+        sio = StringIO()
+        PandasDataFrame = pd.DataFrame(data)
+        PandasWriter = pd.ExcelWriter(sio, engine='xlsxwriter')
+        PandasDataFrame.to_excel(PandasWriter, sheet_name="Embarazadas", index=False)
+        PandasWriter.save()
+        
+        sio.seek(0)
+        workbook = sio.getvalue()
+        
+        response = HttpResponse(workbook, content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = 'attachment; filename=reporte.xlsx' 
+        return response
 
 
 def filtrar(argumentos):
