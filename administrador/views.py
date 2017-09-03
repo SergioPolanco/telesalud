@@ -12,6 +12,7 @@ from django.http import HttpResponse
 from temba_client.v2 import TembaClient
 from django.core.urlresolvers import reverse
 from unicef_app.connect_to_rapidpro import connect_to_client, obtener_token_brigadistas, obtener_token_embarazadas
+from .models import Comunidad
 # Create your views here.
 
 @login_required
@@ -21,7 +22,11 @@ def dashboard(request):
 ###################################################################
 @login_required
 def agregar_embarazada(request):
-    return render(request, 'admin/agregar_embarazada.html')
+    comunidades = Comunidad.objects.all()
+    contexto = {
+        "comunidades": comunidades
+    }
+    return render(request, 'admin/agregar_embarazada.html', context = contexto)
 
 @login_required
 def modificar_embarazada(request):
