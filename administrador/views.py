@@ -12,7 +12,8 @@ from django.http import HttpResponse
 from temba_client.v2 import TembaClient
 from django.core.urlresolvers import reverse
 from unicef_app.connect_to_rapidpro import connect_to_client, obtener_token_brigadistas, obtener_token_embarazadas
-from .models import Comunidad
+from .models import Region, CentroDeSalud, Municipio, Comunidad, LlaveValor
+import collections
 # Create your views here.
 
 @login_required
@@ -33,9 +34,11 @@ def modificar_embarazada(request):
     client = connect_to_client()
     lista_de_embarazadas = client.get_contacts(group=obtener_token_embarazadas())
     query_list = [embarazada.name for embarazada in lista_de_embarazadas.all() if "alvarez" in embarazada.fields["apellido"].lower() ]
-    print(query_list)
+    comunidades = Comunidad.objects.all()
+    comunidades = [{ "id": comunidad.id, "text": comunidad.nombre} for comunidad in comunidades ]
     contexto = {
-        'lista_de_embarazadas': lista_de_embarazadas.all()
+        'lista_de_embarazadas': lista_de_embarazadas.all(),
+        "comunidades": json.dumps(comunidades)
     }
     return render(request, 'admin/modificar_embarazada.html', context = contexto)
 
@@ -55,6 +58,28 @@ def vista_filtrar_embarazada(request):
 def exportar_embarazadas_a_excel(request):
     if request.method == "POST":
         data = [embarazada.fields for embarazada in filtrar(request.POST)]
+        
+        data = [
+            
+            retornar_data_ordenada({
+                "Nombre": embarazada["nombre"],
+                "Apellido": embarazada["apellido"],
+                "Edad": embarazada["edad"],
+                "Cedula": embarazada["cedula"],
+                "Celular": embarazada["celular_personal"],
+                "Centro de Salud": embarazada["centro_de_salud"],
+                "Comunidad": embarazada["comunidad"],
+                "Region": embarazada["region"],
+                "Municipio": embarazada["municipio"],
+                "Discapacidad": "Ninguna" if embarazada["discapacidad"] == "0" else embarazada["discapacidad"],
+                "Empresa Telefonica": embarazada["empresa_telefonica"],
+                "Escolaridad": embarazada["escolaridad"],
+                "Nivel de Escolaridad": retornar_nivel_de_escolaridad(embarazada["escolaridad"], embarazada["valor_de_la_escolaridad"]),
+                "Etnia": embarazada["etnia"],
+                "Numero de Embarazos": embarazada["numero_de_embarazos"],
+                "Semana de Embarazo": embarazada["semana_de_embarazo"]
+            })
+            for embarazada in data]
         sio = StringIO()
         PandasDataFrame = pd.DataFrame(data)
         PandasWriter = pd.ExcelWriter(sio, engine='xlsxwriter')
@@ -68,7 +93,34 @@ def exportar_embarazadas_a_excel(request):
         response['Content-Disposition'] = 'attachment; filename=reporte.xlsx' 
         return response
 
+def retornar_data_ordenada(data):
+    data_ordenada = collections.OrderedDict()
+    data_ordenada["Nombre"] = data["Nombre"]
+    data_ordenada["Apellido"] = data["Apellido"]
+    data_ordenada["Edad"] = data["Edad"]
+    data_ordenada["Cedula"] = data["Cedula"]
+    data_ordenada["Celular"] = data["Celular"]
+    data_ordenada["Empresa Telefonica"] = data["Empresa Telefonica"]
+    data_ordenada["Region"] = data["Region"]
+    data_ordenada["Centro De Salud"] = data["Centro de Salud"]
+    data_ordenada["Municipio"] = data["Municipio"]
+    data_ordenada["Comunidad"] = data["Comunidad"]
+    data_ordenada["Discapacidad"] = data["Discapacidad"]
+    data_ordenada["Escolaridad"] = data["Escolaridad"]
+    data_ordenada["Nivel de Escolaridad"] = data["Nivel de Escolaridad"]
+    data_ordenada["Etnia"] = data["Etnia"]
+    data_ordenada["Numero de Embarazos"] = data["Numero de Embarazos"]
+    data_ordenada["Semana de Embarazo"] = data["Semana de Embarazo"]
+    return data_ordenada
 
+
+def retornar_nivel_de_escolaridad(escolaridad, nivel_de_escolaridad):
+    if escolaridad == "primaria" or escolaridad == "secundaria":
+        valor_escolaridad = LlaveValor.objects.get(llave=nivel_de_escolaridad)
+        return valor_escolaridad.valor
+    else:
+        return nivel_de_escolaridad
+        
 def filtrar(argumentos):
     client = connect_to_client()
     lista_de_embarazadas = client.get_contacts(group=obtener_token_embarazadas()).all()
@@ -181,10 +233,19 @@ class ajax_agregar_embarazada(TemplateView):
             semana_embarazo = request.POST.get('semana_embarazo')
             edad = request.POST.get('edad')
             etnia = request.POST.get('etnia')
-            region = request.POST.get('region')
-            municipio = request.POST.get('municipio')
             comunidad = request.POST.get('comunidad')
-            centro_salud = request.POST.get('centro_salud')
+            escolaridad = request.POST.get('escolaridad')
+            valor_escolaridad = request.POST.get('valor_escolaridad')
+            discapacidad = request.POST.get('discapacidad')
+            numero_de_embarazos = request.POST.get('numero_de_embarazos')
+            celular = request.POST.get('celular')
+            empresa_telefonica = request.POST.get('empresa_telefonica')
+            
+            comunidad = Comunidad.objects.get(id=comunidad)
+            municipio = Municipio.objects.get(nombre=comunidad.municipio)
+            centro_de_salud = CentroDeSalud.objects.get(nombre=municipio.centro_de_salud)
+            region = Region.objects.get(nombre=centro_de_salud.region)
+            
             data= {
                 "name": nombres + " " + apellidos,
                 "groups": [obtener_token_embarazadas()],
@@ -195,11 +256,17 @@ class ajax_agregar_embarazada(TemplateView):
                     'edad': edad,
                     'etnia': etnia,
                     'semana_de_embarazo': semana_embarazo,
-                    'region': region,
-                    'municipio': municipio,
-                    'centro_de_salud': centro_salud,
-                    'comunidad': comunidad,
-                    'cedula': cedula
+                    'region': region.nombre,
+                    'municipio': municipio.nombre,
+                    'centro_de_salud': centro_de_salud.nombre,
+                    'comunidad': comunidad.nombre,
+                    'cedula': cedula,
+                    'numero_de_embarazos': numero_de_embarazos,
+                    'escolaridad': escolaridad,
+                    'valor_de_la_escolaridad': valor_escolaridad,
+                    'discapacidad': discapacidad,
+                    'celular_personal': celular,
+                    'empresa_telefonica': empresa_telefonica
                 }
             }
             try:
@@ -229,6 +296,35 @@ class ajax_actualizar_embarazadas(TemplateView):
                 fields.update({'semana_de_embarazo': request.POST.get('semana_embarazo')})
             elif request.POST.get('etnia') is not None:
                 fields.update({'etnia': request.POST.get('etnia')})
+            elif request.POST.get('discapacidad') is not None:
+                fields.update({'discapacidad': request.POST.get('discapacidad')})
+            elif request.POST.get('numero_de_embarazos') is not None:
+                fields.update({'etnia': request.POST.get('numero_de_embarazos')})
+            elif request.POST.get('empresa_telefonica') is not None:
+                fields.update({'empresa_telefonica': request.POST.get('empresa_telefonica')})
+            elif request.POST.get('escolaridad') is not None:
+                fields.update({'escolaridad': request.POST.get('escolaridad')})
+            elif request.POST.get('primaria') is not None:
+                fields.update({'valor_de_la_escolaridad': request.POST.get('primaria')})
+            elif request.POST.get('secundaria') is not None:
+                fields.update({'valor_de_la_escolaridad': request.POST.get('secundaria')})
+            elif request.POST.get('tecnico') is not None:
+                fields.update({'valor_de_la_escolaridad': request.POST.get('tecnico')})
+            elif request.POST.get('universidad') is not None:
+                fields.update({'valor_de_la_escolaridad': request.POST.get('universidad')})
+            elif request.POST.get('valor_otro') is not None:
+                fields.update({'valor_de_la_escolaridad': request.POST.get('valor_otro')})
+            elif request.POST.get('celular') is not None:
+                fields.update({'celular_personal': request.POST.get('celular')})
+            elif request.POST.get('comunidad') is not None:
+                comunidad = Comunidad.objects.get(id=request.POST.get('comunidad'))
+                municipio = Municipio.objects.get(nombre=comunidad.municipio)
+                centro_de_salud = CentroDeSalud.objects.get(nombre=municipio.centro_de_salud)
+                region = Region.objects.get(nombre=centro_de_salud.region)
+                fields.update({'comunidad': comunidad.nombre})
+                fields.update({'municipio': municipio.nombre})
+                fields.update({'centro_de_salud': centro_de_salud.nombre})
+                fields.update({'region': region.nombre})
             
             try:
                 client.update_contact(e_id, language=None, urns=None, fields=fields)

@@ -29,6 +29,7 @@ function load(){
     });
 
     var cities = ["Alaska", "Canada", "Nicaragua"];
+    var empresas_telefonicas = ["cootel", "claro", "movistar"]
     $('.show-details-btn').on('click', function(e) {
         e.preventDefault();
         $(this).closest('tr').next().toggleClass('open');
@@ -50,7 +51,14 @@ function load(){
             actualizar_embarazada("apellido", new_value, $(this).attr("e_id"))
         }
     });
-
+    
+    $('.celular').editable({
+        type: 'text',
+        name: 'celular',
+        success: function(res, new_value){
+            actualizar_embarazada("celular", new_value, $(this).attr("e_id"))
+        }
+    });
     $('.cedula').editable({
         type: 'text',
         name: 'nombres',
@@ -58,10 +66,14 @@ function load(){
             actualizar_embarazada("cedula", new_value, $(this).attr("e_id"))
         }
     });
-
+    
     $('.etnia').editable({
-        type: 'text',
-        name: 'nombres',
+        type: 'select2',
+        value : '',
+        source: ["creole", "misquito", "garifona", "rama", "ulwa", "mestizo"],
+        select2: {
+            'width': 140
+        },
         success: function(res, new_value){
             actualizar_embarazada("etnia", new_value, $(this).attr("e_id"))
         }
@@ -70,54 +82,207 @@ function load(){
     $('.comunidad').editable({
         type: 'select2',
         value : '',
-        //onblur:'ignore',
-        source: cities,
+        source: comunidades,
         select2: {
             'width': 140
+        },
+        success: function(res, new_value){
+            actualizar_embarazada("comunidad", new_value, $(this).attr("e_id"))
         }
     });
-    $('.municipio').editable({
+    $('.primaria').editable({
+        type: 'select2',
+        value : 'vacio',
+        source: [
+            {
+                id:"1", 
+                text: "Primer Grado"
+            },
+            {
+                id:"2", 
+                text: "Segundo Grado"
+            },
+            {
+                id:"3", 
+                text: "Tercer Grado"
+            },
+            {
+                id:"4", 
+                text: "Cuarto Grado"
+            },
+            {
+                id:"5", 
+                text: "Quinto Grado"
+            },
+            {
+                id:"6", 
+                text: "Sexto Grado"
+            },
+        ],
+        select2: {
+            'width': 140
+        },
+        success: function(res, new_value){
+            actualizar_embarazada("primaria", new_value, $(this).attr("e_id"))
+        }
+    });
+    $('.secundaria').editable({
+        type: 'select2',
+        value : 'opcion',
+        source: [
+            {
+                id:"7", 
+                text: "Primer Año"
+            },
+            {
+                id:"8", 
+                text: "Segundo Año"
+            },
+            {
+                id:"9", 
+                text: "Tercer Año"
+            },
+            {
+                id:"10", 
+                text: "Cuarto Año"
+            },
+            {
+                id:"11", 
+                text: "Quinto Año"
+            }
+        ],
+        select2: {
+            'width': 140
+        },
+        success: function(res, new_value){
+            actualizar_embarazada("secundaria", new_value, $(this).attr("e_id"))
+        }
+    });
+    $('.tecnico').editable({
+        type: 'text',
+        name: 'valor_tecnico',
+        success: function(res, new_value){
+            actualizar_embarazada("tecnico", new_value, $(this).attr("e_id"))
+        }
+    });
+    $('.universidad').editable({
+        type: 'text',
+        name: 'valor_universidad',
+        success: function(res, new_value){
+            actualizar_embarazada("universidad", new_value, $(this).attr("e_id"))
+        }
+    });
+    $('.otro').editable({
+        type: 'text',
+        name: 'valor_otro',
+        success: function(res, new_value){
+            actualizar_embarazada("valor_otro", new_value, $(this).attr("e_id"))
+        }
+    });
+    $('.escolaridad').editable({
+        type: 'select2',
+        value : '',
+        source: ["primaria", "secundaria", "tecnico", "universidad", "otro"],
+        select2: {
+            'width': 140
+        },
+        success: function(res, new_value){
+            actualizar_embarazada("escolaridad", new_value, $(this).attr("e_id"))
+        }
+    });
+    $('.escolaridad').on('shown', function(e, editable) {
+        $(document).on('change', editable, function() {
+                    
+            var new_value = editable.input.$input[0].value;
+    
+            if (new_value == 'primaria') {
+                $(".div-primaria").removeClass("hide")
+                $(".div-secundaria").addClass("hide")
+                $(".div-tecnico").addClass("hide")
+                $(".div-universidad").addClass("hide")
+                $(".div-otros-estudios").addClass("hide")
+            }
+            if (new_value == 'secundaria') {
+                $(".div-primaria").addClass("hide")
+                $(".div-secundaria").removeClass("hide")
+                $(".div-tecnico").addClass("hide")
+                $(".div-universidad").addClass("hide")
+                $(".div-otros-estudios").addClass("hide")
+            }
+            if (new_value == 'tecnico') {
+                $(".div-primaria").addClass("hide")
+                $(".div-secundaria").addClass("hide")
+                $(".div-tecnico").removeClass("hide")
+                $(".div-universidad").addClass("hide")
+                $(".div-otros-estudios").addClass("hide")
+            }
+            if (new_value == 'universidad') {
+                $(".div-primaria").addClass("hide")
+                $(".div-secundaria").addClass("hide")
+                $(".div-tecnico").addClass("hide")
+                $(".div-universidad").removeClass("hide")
+                $(".div-otros-estudios").addClass("hide")
+            }
+            if (new_value == 'otro') {
+                $(".div-primaria").addClass("hide")
+                $(".div-secundaria").addClass("hide")
+                $(".div-tecnico").addClass("hide")
+                $(".div-universidad").addClass("hide")
+                $(".div-otros-estudios").removeClass("hide")
+            }
+        });
+    });
+    $('.discapacidad').editable({
         type: 'select2',
         value : '',
         //onblur:'ignore',
-        source: cities,
+        source: ["fisica", "mental", "motora"],
         select2: {
             'width': 140
+        },
+        success: function(res, new_value){
+            actualizar_embarazada("discapacidad", new_value, $(this).attr("e_id"))
+        }
+    });
+    $('.empresa_telefonica').editable({
+        type: 'select2',
+        value : '',
+        //onblur:'ignore',
+        source: empresas_telefonicas,
+        select2: {
+            'width': 140
+        },
+        success: function(res, new_value){
+            actualizar_embarazada("empresa_telefonica", new_value, $(this).attr("e_id"))
         }
     });
 
-    $('.centro_salud').editable({
-        type: 'select2',
-        value : '',
-        //onblur:'ignore',
-        source: cities,
-        select2: {
-            'width': 140
-        }
-    });
-
-    $('.region').editable({
-        type: 'select2',
-        value : '',
-        //onblur:'ignore',
-        source: cities,
-        select2: {
-            'width': 140
-        }
-    });
 
     $('.edad').editable({
         type: 'spinner',
         name : 'age',
         spinner : {
-            min : 16,
+            min : 1,
             max : 99,
             step: 1,
             on_sides: true
-            //,nativeUI: true//if true and browser support input[type=number], native browser control will be used
         },
         success: function(res, new_value){
             actualizar_embarazada("edad", new_value, $(this).attr("e_id"))
+        }
+    });
+    
+    $('.numero_de_embarazos').editable({
+        type: 'spinner',
+        name : 'age',
+        spinner : {
+            min : 1,
+            max : 99,
+            step: 1,
+            on_sides: true
+        },
+        success: function(res, new_value){
+            actualizar_embarazada("numero_de_embarazos", new_value, $(this).attr("e_id"))
         }
     });
 
@@ -125,7 +290,7 @@ function load(){
         type: 'spinner',
         name : 'age',
         spinner : {
-            min : 16,
+            min : 1,
             max : 99,
             step: 1,
             on_sides: true

@@ -12,6 +12,9 @@
 {% endblock %}
 
 {% block content %}
+    <script>
+        var comunidades = {{ comunidades|safe }}
+    </script>
     <table id="simple_table" class="table table-bordered table-hover">
         <thead>
             <th>Detalles</th>
@@ -74,16 +77,20 @@
                                                 <span class="apellidos" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.apellido|safe }}</span>
                                             </div>
                                         </div>
-
                                         <div class="profile-info-row">
-                                            <div class="profile-info-name"> Region </div>
+                                            <div class="profile-info-name"> Celular </div>
 
                                             <div class="profile-info-value">
-                                                <i class="fa fa-map-marker light-orange bigger-110"></i>
-                                                <span class="region" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.region|safe }}</span>
+                                                <span class="celular" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.celular_personal|safe }}</span>
                                             </div>
                                         </div>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Empresa Telefonica </div>
 
+                                            <div class="profile-info-value">
+                                                <span class="empresa_telefonica" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.empresa_telefonica|safe }}</span>
+                                            </div>
+                                        </div>
                                         <div class="profile-info-row">
                                             <div class="profile-info-name"> Edad </div>
 
@@ -91,7 +98,7 @@
                                                 <span class="edad" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.edad|safe }}</span>
                                             </div>
                                         </div>
-
+                                        
                                         <div class="profile-info-row">
                                             <div class="profile-info-name"> Comunidad </div>
 
@@ -99,15 +106,57 @@
                                                 <span class="comunidad" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.comunidad|safe }}</span>
                                             </div>
                                         </div>
-
+                                        
                                         <div class="profile-info-row">
-                                            <div class="profile-info-name"> Centro de Salud </div>
+                                            <div class="profile-info-name"> Escolaridad </div>
 
                                             <div class="profile-info-value">
-                                                <span class="centro_salud" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.centro_de_salud|safe }}</span>
+                                                <span class="escolaridad" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.escolaridad|safe }}</span>
                                             </div>
                                         </div>
+                                        
+                                        <div class="profile-info-row div-primaria hide">
+                                            <div class="profile-info-name"> Primaria </div>
 
+                                            <div class="profile-info-value">
+                                                <span class="primaria" e_id="{{ embarazada.uuid }}">Seleccione una opción</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row div-secundaria hide">
+                                            <div class="profile-info-name"> Secundaria </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="secundaria" e_id="{{ embarazada.uuid }}">Seleccione una opción</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row div-tecnico hide">
+                                            <div class="profile-info-name"> Tecnico </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="tecnico" e_id="{{ embarazada.uuid }}">Escriba la carrera</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row div-universidad hide">
+                                            <div class="profile-info-name"> Universidad </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="celular" e_id="{{ embarazada.uuid }}">Escriba la carrera</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row div-otros-estudios hide">
+                                            <div class="profile-info-name"> Otros Estudios </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="celular" e_id="{{ embarazada.uuid }}">Describa</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Discapacidad </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="discapacidad" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.discapacidad|safe }}</span>
+                                            </div>
+                                        </div>
                                         <div class="profile-info-row">
                                             <div class="profile-info-name"> N° de Cedula </div>
 
@@ -121,6 +170,14 @@
 
                                             <div class="profile-info-value">
                                                 <span class="semana_embarazo" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.semana_de_embarazo|safe }}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="profile-info-row">
+                                            <div class="profile-info-name"> Número de Embarazos </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="numero_de_embarazos" e_id="{{ embarazada.uuid }}">{{ embarazada.fields.numero_de_embarazos|safe }}</span>
                                             </div>
                                         </div>
 
