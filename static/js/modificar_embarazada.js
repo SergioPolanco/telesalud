@@ -28,7 +28,6 @@ function load(){
         $pager.insertBefore($table).find('span.page-number:first').addClass('active');
     });
 
-    var cities = ["Alaska", "Canada", "Nicaragua"];
     var empresas_telefonicas = ["cootel", "claro", "movistar"]
     $('.show-details-btn').on('click', function(e) {
         e.preventDefault();
@@ -236,7 +235,7 @@ function load(){
         type: 'select2',
         value : '',
         //onblur:'ignore',
-        source: ["fisica", "mental", "motora"],
+        source: ["ninguna","fisica", "mental", "motora"],
         select2: {
             'width': 140
         },

@@ -23,9 +23,9 @@
                         <div>
                             <select class="chosen-select form-control" id="region" name="region" data-placeholder="Choose a State...">
                                 <option value="">  </option>
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
+                                {% for region in regiones %}
+                                    <option value="{{ region.id }}">{{ region.nombre }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -39,9 +39,9 @@
                         <div>
                             <select class="chosen-select form-control" id="municipio" name="municipio"  data-placeholder="Choose a State...">
                                 <option value="">  </option>
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
+                                {% for municipio in municipios %}
+                                    <option value="{{ municipio.id }}">{{ municipio.nombre }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -55,9 +55,9 @@
                         <div>
                             <select class="chosen-select form-control" id="centro_salud" name="centro_salud" data-placeholder="Choose a State...">
                                 <option value="">  </option>
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
+                                {% for centro_salud in centros_de_salud %}
+                                    <option value="{{ centro_salud.id }}">{{ centro_salud.nombre }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -71,9 +71,9 @@
                         <div>
                             <select class="chosen-select form-control" id="comunidad" name="comunidad" data-placeholder="Choose a State...">
                                 <option value="">  </option>
-                                <option value="AL">Alabama</option>
-                                <option value="AK">Alaska</option>
-                                <option value="AZ">Arizona</option>
+                                {% for comunidad in comunidades %}
+                                    <option value="{{ comunidad.id }}">{{ comunidad.nombre }}</option>
+                                {% endfor %}
                             </select>
                         </div>
                     </div>
@@ -110,9 +110,19 @@
             </div>
             <div class="col-md-3">
                 <div class="">
-                    <label class="control-label no-padding-right" for="">Etnia</label>
+                    <label class="control-label no-padding-right" for="form-field-1"> Etnia </label>
                     <div class="">
-                        <input type="text" id="etnia" name="etnia" class="form-control"/>
+                        <div>
+                            <select class="chosen-select form-control" id="etnia" name="etnia">
+                                <option value="">  </option>
+                                <option value="creole">Creole</option>
+                                <option value="misquito">Misquito</option>
+                                <option value="garifona">Garifona</option>
+                                <option value="rama">Rama</option>
+                                <option value="ulma">Ulwa</option>
+                                <option value="mestizo">Mestizo</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -141,6 +151,49 @@
                         <div class="col-md-6">
                             <input type="text" id="edad_hasta" name="edad_hasta" placeholder="Hasta" class="form-control"/>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="">
+                    <label class="control-label no-padding-right" for="form-field-1"> Discapacidad </label>
+                    <div class="">
+                        <div>
+                            <select class="chosen-select form-control" id="discapacidad" name="discapacidad">
+                                <option value="ninguna">Ninguna</option>
+                                <option value="creole">Fisica</option>
+                                <option value="misquito">Motora</option>
+                                <option value="garifona">Mental</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="">
+                    <label class="control-label no-padding-right" for="form-field-1"> Escolaridad </label>
+                    <div class="">
+                        <div>
+                            <select class="chosen-select form-control" id="escolaridad" name="escolaridad">
+                                <option value="">  </option>
+                                <option value="primaria">Primaria</option>
+                                <option value="secundaria">Secundaria</option>
+                                <option value="tecnico">Tecnico</option>
+                                <option value="universidad">Universidad</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="">
+                    <label class="control-label no-padding-right" for="form-field-1"> N° de Embarazos </label>
+            
+                    <div class="">
+                        <input type="text" name="numero_de_embarazos" id="numero_de_embarazos" placeholder="N° de Embarazos" class="form-control" />
                     </div>
                 </div>
             </div>

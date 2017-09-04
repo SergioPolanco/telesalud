@@ -3,10 +3,60 @@ $(document).ready(load)
 function load(){
     $( "[href='/admin/agregar_brigadista/']" ).parent().addClass('active').parent().addClass('open');
     $( "[href='/admin/agregar_brigadista/']" ).parent().parent().parent().addClass('active open hsub');
+    
+    $("#cmb_escolaridad").on("change", function(e){
+        console.log($(this).val())
+        if($(this).val() == "primaria"){
+            $("#div-cmb-primaria").removeClass("hide")
+            $("#div-cmb-secundaria").addClass("hide")
+            $("#div-valor-tecnico").addClass("hide")
+            $("#div-valor-universidad").addClass("hide")
+            $("#div-valor-otro-escolaridad").addClass("hide")
+            
+        }
+        if($(this).val() == "secundaria"){
+            $("#div-cmb-primaria").addClass("hide")
+            $("#div-cmb-secundaria").removeClass("hide")
+            $("#div-valor-tecnico").addClass("hide")
+            $("#div-valor-universidad").addClass("hide")
+            $("#div-valor-otro-escolaridad").addClass("hide")
+            
+        }
+        if($(this).val() == "tecnico"){
+            $("#div-cmb-primaria").addClass("hide")
+            $("#div-cmb-secundaria").addClass("hide")
+            $("#div-valor-tecnico").removeClass("hide")
+            $("#div-valor-universidad").addClass("hide")
+            $("#div-valor-otro-escolaridad").addClass("hide")
+            
+        }
+        
+        if($(this).val() == "universidad"){
+            $("#div-cmb-primaria").addClass("hide")
+            $("#div-cmb-secundaria").addClass("hide")
+            $("#div-valor-tecnico").addClass("hide")
+            $("#div-valor-universidad").removeClass("hide")
+            $("#div-valor-otro-escolaridad").addClass("hide")
+            
+        }
+        if($(this).val() == "otro"){
+            $("#div-cmb-primaria").addClass("hide")
+            $("#div-cmb-secundaria").addClass("hide")
+            $("#div-valor-tecnico").addClass("hide")
+            $("#div-valor-universidad").addClass("hide")
+            $("#div-valor-otro-escolaridad").removeClass("hide")
+            
+        }
+    })
+    
     $(document).on('submit', "form[name='form-nuevo-brigadista']", function(){
         
         if(validar_campos() == 0){
             var formData = new FormData( $( "form[name='form-nuevo-brigadista']" )[0] );
+            var escolaridad = $("#cmb_escolaridad").val();
+            var valor_escolaridad = obtener_valor_escolaridad(escolaridad)
+            formData.append("escolaridad", escolaridad);
+            formData.append("valor_escolaridad", valor_escolaridad)
             $.ajax({
                 url : '/admin/insert_brigadist/',
                 type : 'post',
@@ -58,6 +108,29 @@ function load(){
         return false;
     })
 }
+
+function obtener_valor_escolaridad(escolaridad){
+    if(escolaridad == "primaria"){
+        return $("#cmb_primaria").val()
+    }
+    if(escolaridad == "secundaria"){
+        return $("#cmb_secundaria").val()
+        
+    }
+    if(escolaridad == "tecnico"){
+        return $("#valor_tecnico").val()
+        
+    }
+    
+    if(escolaridad == "universidad"){
+        return $("#valor_universidad").val()
+        
+    }
+    if(escolaridad == "otro"){
+        return $("#valor_otro_escolaridad").val()
+    }
+}
+
 
 function validar_campos(){
     let cont = 0;

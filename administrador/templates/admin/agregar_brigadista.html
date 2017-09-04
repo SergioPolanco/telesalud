@@ -14,49 +14,7 @@
 {% block content %}
 <form class="form-horizontal" name="form-nuevo-brigadista" role="form">
     {% csrf_token %}
-    <div class="form-group">
-        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Region </label>
-
-        <div class="col-sm-3">
-            <div>
-                <select class="chosen-select form-control" id="region" name="region" data-placeholder="Choose a State...">
-                    <option value="">  </option>
-                    <option value="AL">Alabama</option>
-                    <option value="AK">Alaska</option>
-                    <option value="AZ">Arizona</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Municipio </label>
-
-        <div class="col-sm-3">
-            <div>
-                <select class="chosen-select form-control" id="municipio" name="municipio"  data-placeholder="Choose a State...">
-                    <option value="">  </option>
-                    <option value="AL">Alabama</option>
-                    <option value="AK">Alaska</option>
-                    <option value="AZ">Arizona</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Centro de Salud </label>
-
-        <div class="col-sm-3">
-            <div>
-                <select class="chosen-select form-control" id="centro_salud" name="centro_salud" data-placeholder="Choose a State...">
-                    <option value="">  </option>
-                    <option value="AL">Alabama</option>
-                    <option value="AK">Alaska</option>
-                    <option value="AZ">Arizona</option>
-                </select>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
+    <!--<div class="form-group">
         <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Sector </label>
 
         <div class="col-sm-3">
@@ -69,17 +27,17 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Comunidad </label>
 
         <div class="col-sm-3">
             <div>
                 <select class="chosen-select form-control" id="comunidad" name="comunidad" data-placeholder="Choose a State...">
-                    <option value="">  </option>
-                    <option value="AL">Alabama</option>
-                    <option value="AK">Alaska</option>
-                    <option value="AZ">Arizona</option>
+                    <option value="0">Seleccionar una opción</option>
+                    {% for comunidad in comunidades %}
+                        <option value="{{ comunidad.id }}">{{ comunidad.nombre }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
@@ -124,16 +82,77 @@
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-3 control-label no-padding-right" for="">Etnia</label>
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-1">Etnia</label>
         <div class="col-sm-3">
-            <input type="text" id="etnia" name="etnia"/>
+            <div>
+                <select class="chosen-select form-control" id="etnia" name="etnia">
+                    <option value="0">Seleccionar una opción</option>
+                    <option value="creole">Creole</option>
+                    <option value="misquito">Misquito</option>
+                    <option value="garifona">Garifona</option>
+                    <option value="rama">Rama</option>
+                    <option value="Ulwa">Ulwa</option>
+                    <option value="Mestizo">Mestizo</option>
+                </select>
+            </div>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-3 control-label no-padding-right" for="">Escolaridad</label>
+        <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Escolaridad </label>
+
         <div class="col-sm-3">
-            <input type="text" id="escolaridad" name="escolaridad"/>
+            <div>
+                <select class="chosen-select form-control" id="cmb_escolaridad" name="cmb_escolaridad">
+                    <option value="0">Seleccionar una opción</option>
+                    <option value="primaria">Primaria</option>
+                    <option value="secundaria">Secundaria</option>
+                    <option value="tecnico">Tecnico</option>
+                    <option value="universidad">Universidad</option>
+                    <option value="otro">Otro</option>
+                </select>
+            </div>
         </div>
+        <div class="col-sm-3 hide" id="div-cmb-primaria">
+            <div>
+                <select class="chosen-select form-control" id="cmb_primaria" name="cmb_primaria">
+                    <option value="0">Seleccionar una opción</option>
+                    <option value="1">Primer Grado</option>
+                    <option value="2">Segundo Grado</option>
+                    <option value="3">Tercer Grado</option>
+                    <option value="4">Cuarto Grado</option>
+                    <option value="5">Quinto Grado</option>
+                    <option value="6">Sexto Grado</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3 hide" id="div-cmb-secundaria">
+            <div>
+                <select class="chosen-select form-control" id="cmb_secundaria" name="cmb_secundaria">
+                    <option value="0">Seleccionar una opción</option>
+                    <option value="7">Primer año</option>
+                    <option value="8">Segundo año</option>
+                    <option value="9">Tercer año</option>
+                    <option value="10">Cuarto año</option>
+                    <option value="11">Quinto año</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-4 hide" id="div-valor-tecnico">
+            <div class="form-group">
+                <input type="text" class="form-control" id="valor_tecnico" name="valor_tecnico"/>
+            </div>
+        </div>
+        <div class="col-sm-4 hide" id="div-valor-universidad">
+            <div class="form-group">
+                <input type="text" class="form-control" id="valor_universidad" name="valor_universidad"/>
+            </div>
+        </div>
+        <div class="col-sm-4 hide" id="div-valor-otro-escolaridad">
+            <div class="form-group">
+                <input type="text" class="form-control" id="valor_otro_escolaridad" name="valor_otro_escolaridad"/>
+            </div>
+        </div>
+        
     </div>
     <div class="form-group">
         <label class="col-sm-3 control-label no-padding-right" for="">Ocupación</label>

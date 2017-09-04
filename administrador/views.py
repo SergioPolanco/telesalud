@@ -46,7 +46,17 @@ def modificar_embarazada(request):
 def vista_filtrar_embarazada(request):
     print(request.method)
     if request.method == "GET":
-        return render(request, 'admin/filtrar_embarazada.html')
+        comunidades = Comunidad.objects.all()
+        municipios = Municipio.objects.all()
+        centros_de_salud = CentroDeSalud.objects.all()
+        regiones = Region.objects.all()
+        contexto = {
+            "comunidades": comunidades,
+            "municipios": municipios,
+            "centros_de_salud": centros_de_salud,
+            "regiones": regiones
+        }
+        return render(request, 'admin/filtrar_embarazada.html', context=contexto)
     else:
         lista_de_embarazadas = filtrar(request.POST)
         contexto = {
@@ -217,7 +227,22 @@ def filtrar(argumentos):
                 lambda x:  edad_desde <= x.fields["edad"] <= edad_hasta,
                 lista_de_embarazadas
         )
-        
+    
+    if argumentos.get("discapacidad"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["discapacidad"].lower() == x.fields["discapacidad"].lower(),
+                lista_de_embarazadas
+        )
+    if argumentos.get("escolaridad"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["escolaridad"].lower() == x.fields["escolaridad"].lower(),
+                lista_de_embarazadas
+        )
+    if argumentos.get("numero_de_embarazos"):
+        lista_de_embarazadas = filter(
+                lambda x: argumentos["numero_de_embarazos"].lower() == x.fields["numero_de_embarazos"].lower(),
+                lista_de_embarazadas
+        )
         
     return lista_de_embarazadas
         
@@ -337,14 +362,20 @@ class ajax_actualizar_embarazadas(TemplateView):
 ##########################################################################################################################
 @login_required
 def agregar_brigadista(request):
-    return render(request, 'admin/agregar_brigadista.html')
+    comunidades = Comunidad.objects.all()
+    contexto = {
+        "comunidades": comunidades
+    }
+    return render(request, 'admin/agregar_brigadista.html', context=contexto)
 @login_required
 def modificar_brigadista(request):
     client = connect_to_client()
     lista_de_brigadistas = client.get_contacts(group=obtener_token_brigadistas())
-    print(lista_de_brigadistas.all())
+    comunidades = Comunidad.objects.all()
+    comunidades = [{ "id": comunidad.id, "text": comunidad.nombre} for comunidad in comunidades ]
     contexto = {
-        'lista_de_brigadistas': lista_de_brigadistas.all()
+        'lista_de_brigadistas': lista_de_brigadistas.all(),
+        'comunidades': json.dumps(comunidades)
     }
     return render(request, 'admin/modificar_brigadista.html', context = contexto)
 
@@ -356,36 +387,37 @@ class ajax_agregar_brigadista(TemplateView):
             apellidos = request.POST.get('apellidos')
             cedula = request.POST.get('cedula')
             etnia = request.POST.get('etnia')
-            region = request.POST.get('region')
-            municipio = request.POST.get('municipio')
             comunidad = request.POST.get('comunidad')
-            centro_salud = request.POST.get('centro_salud')
-            sector = request.POST.get('sector')
             sexo = request.POST.get('sexo')
             fecha_nacimiento = request.POST.get('fecha_nacimiento')
-            escolaridad = request.POST.get('escolaridad')
             ocupacion = request.POST.get('ocupacion')
             funcion_sistema_salud = request.POST.get('funcion_sistema_salud')
             anios_sistema_salud = request.POST.get('anios_sistema_salud')
             celular_personal = request.POST.get('celular_personal')
             celular_asignado = request.POST.get('celular_asignado')
+            escolaridad = request.POST.get('escolaridad')
+            valor_escolaridad = request.POST.get('valor_escolaridad')
+            
+            comunidad = Comunidad.objects.get(id=comunidad)
+            municipio = Municipio.objects.get(nombre=comunidad.municipio)
+            centro_de_salud = CentroDeSalud.objects.get(nombre=municipio.centro_de_salud)
+            region = Region.objects.get(nombre=centro_de_salud.region)
             data= {
                 "name": nombres + " "  + apellidos,
                 "groups": [obtener_token_brigadistas()],
-                "urns": [],
                 "fields": {
                     'nombre': nombres,
                     'apellido': apellidos,
                     'etnia': etnia,
-                    'region': region,
-                    'municipio': municipio,
-                    'centro_de_salud': centro_salud,
-                    'comunidad': comunidad,
+                    'region': region.nombre,
+                    'municipio': municipio.nombre,
+                    'centro_de_salud': centro_de_salud.nombre,
+                    'comunidad': comunidad.nombre,
                     'cedula': cedula,
-                    'sector': sector,
                     'sexo': sexo,
                     'fecha_de_nacimiento': fecha_nacimiento,
                     'escolaridad': escolaridad,
+                    'valor_de_la_escolaridad': valor_escolaridad,
                     'ocupacion': ocupacion,
                     'funcion_en_el_sistema_de_salud': funcion_sistema_salud,
                     'anios_en_el_sistema_de_salud': anios_sistema_salud,
@@ -393,9 +425,8 @@ class ajax_agregar_brigadista(TemplateView):
                     'celular_asignado': celular_asignado
                 }
             }
-            print("136")
             try:
-                client.create_contact(name=data["name"], language=None, urns=None, fields=data["fields"], groups=data["groups"])
+                client.create_contact(name=data["name"], language=None, urns=["tel:+505"+celular_asignado], fields=data["fields"], groups=data["groups"])
                 message = {'status':True, 'mensaje': 'Excelente! Datos ingresados satisfactoriamente.'}
             except expression as identifier:
                 message = {'status':False,'mensaje': 'Ha ocurrido un error'}
@@ -419,8 +450,6 @@ class ajax_actualizar_brigadista(TemplateView):
                 fields.update({'ocupacion': request.POST.get('ocupacion')})
             elif request.POST.get('cedula') is not None:
                 fields.update({'cedula': request.POST.get('cedula')})
-            elif request.POST.get('escolaridad') is not None:
-                fields.update({'escolaridad': request.POST.get('escolaridad')})
             elif request.POST.get('funcion_sistema') is not None:
                 fields.update({'funcion_en_el_sistema_de_salud': request.POST.get('funcion_sistema')})
             elif request.POST.get('anios_sistema') is not None:
@@ -435,7 +464,28 @@ class ajax_actualizar_brigadista(TemplateView):
                 fields.update({'sexo': request.POST.get('sexo')})
             elif request.POST.get('fecha_nacimiento') is not None:
                 fields.update({'fecha_de_nacimiento': request.POST.get('fecha_nacimiento')})
-            
+            elif request.POST.get('escolaridad') is not None:
+                fields.update({'escolaridad': request.POST.get('escolaridad')})
+            elif request.POST.get('primaria') is not None:
+                fields.update({'valor_de_la_escolaridad': request.POST.get('primaria')})
+            elif request.POST.get('secundaria') is not None:
+                fields.update({'valor_de_la_escolaridad': request.POST.get('secundaria')})
+            elif request.POST.get('tecnico') is not None:
+                fields.update({'valor_de_la_escolaridad': request.POST.get('tecnico')})
+            elif request.POST.get('universidad') is not None:
+                fields.update({'valor_de_la_escolaridad': request.POST.get('universidad')})
+            elif request.POST.get('valor_otro') is not None:
+                fields.update({'valor_de_la_escolaridad': request.POST.get('valor_otro')})
+            elif request.POST.get('comunidad') is not None:
+                comunidad = Comunidad.objects.get(id=request.POST.get('comunidad'))
+                municipio = Municipio.objects.get(nombre=comunidad.municipio)
+                centro_de_salud = CentroDeSalud.objects.get(nombre=municipio.centro_de_salud)
+                region = Region.objects.get(nombre=centro_de_salud.region)
+                fields.update({'comunidad': comunidad.nombre})
+                fields.update({'municipio': municipio.nombre})
+                fields.update({'centro_de_salud': centro_de_salud.nombre})
+                fields.update({'region': region.nombre})
+      
             try:
                 client.update_contact(b_id, language=None, urns=None, fields=fields)
                 message = {'status':True, 'mensaje': 'Excelente! Datos ingresados satisfactoriamente.'}

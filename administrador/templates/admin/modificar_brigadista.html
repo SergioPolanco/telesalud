@@ -12,6 +12,9 @@
 {% endblock %}
 
 {% block content %}
+    <script>
+        var comunidades = {{ comunidades|safe }}
+    </script>
     <table id="simple_table" class="table table-bordered table-hover">
         <thead>
             <th>Detalles</th>
@@ -76,23 +79,6 @@
                                         </div>
 
                                         <div class="profile-info-row">
-                                            <div class="profile-info-name"> Region </div>
-
-                                            <div class="profile-info-value">
-                                                <i class="fa fa-map-marker light-orange bigger-110"></i>
-                                                <span class="region" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.region|safe }}</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Sector </div>
-
-                                            <div class="profile-info-value">
-                                                <span class="sector" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.sector|safe }}</span>
-                                            </div>
-                                        </div>
-
-                                        <div class="profile-info-row">
                                             <div class="profile-info-name"> Comunidad </div>
 
                                             <div class="profile-info-value">
@@ -100,13 +86,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="profile-info-row">
-                                            <div class="profile-info-name"> Centro de Salud </div>
-
-                                            <div class="profile-info-value">
-                                                <span class="centro_salud" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.centro_de_salud|safe }}</span>
-                                            </div>
-                                        </div>
 
                                         <div class="profile-info-row">
                                             <div class="profile-info-name" > N° de Cedula </div>
@@ -136,7 +115,43 @@
                                             <div class="profile-info-name"> Escolaridad </div>
 
                                             <div class="profile-info-value">
-                                                <span class="escolaridades" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.escolaridad|safe }}</span>
+                                                <span class="escolaridad" b_id="{{ brigadista.uuid }}">{{ brigadista.fields.escolaridad|safe }}</span>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="profile-info-row div-primaria hide">
+                                            <div class="profile-info-name"> Primaria </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="primaria" b_id="{{ brigadista.uuid }}">Seleccione una opción</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row div-secundaria hide">
+                                            <div class="profile-info-name"> Secundaria </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="secundaria" b_id="{{ brigadista.uuid }}">Seleccione una opción</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row div-tecnico hide">
+                                            <div class="profile-info-name"> Tecnico </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="tecnico" b_id="{{ brigadista.uuid }}">Escriba la carrera</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row div-universidad hide">
+                                            <div class="profile-info-name"> Universidad </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="celular" b_id="{{ brigadista.uuid }}">Escriba la carrera</span>
+                                            </div>
+                                        </div>
+                                        <div class="profile-info-row div-otros-estudios hide">
+                                            <div class="profile-info-name"> Otros Estudios </div>
+
+                                            <div class="profile-info-value">
+                                                <span class="celular" b_id="{{ brigadista.uuid }}">Describa</span>
                                             </div>
                                         </div>
 

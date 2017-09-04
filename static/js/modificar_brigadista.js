@@ -68,14 +68,6 @@ function load(){
         }
     });
 
-    $('.escolaridades').editable({
-        type: 'text',
-        name: 'nombres',
-        success: function(res, new_value){
-            actualizar_brigadista("escolaridad", new_value, $(this).attr("b_id"))
-        }
-    });
-
     $('.funcion_sistema').editable({
         type: 'text',
         name: 'nombres',
@@ -109,75 +101,184 @@ function load(){
     });
 
     $('.etnia').editable({
-        type: 'text',
-        name: 'nombres',
+        type: 'select2',
+        value : '',
+        source: ["creole", "misquito", "garifona", "rama", "ulwa", "mestizo"],
+        select2: {
+            'width': 140
+        },
         success: function(res, new_value){
             actualizar_brigadista("etnia", new_value, $(this).attr("b_id"))
         }
     });
+    
+    $('.sexo').editable({
+        type: 'select2',
+        value : '',
+        source: ["femenino", "masculino"],
+        select2: {
+            'width': 140
+        },
+        success: function(res, new_value){
+            actualizar_brigadista("sexo", new_value, $(this).attr("b_id"))
+        }
+    });
+
 
     $('.comunidad').editable({
         type: 'select2',
         value : '',
         //onblur:'ignore',
-        source: cities,
+        source: comunidades,
         select2: {
             'width': 140
         },
         success: function(res, new_value){
-            
+            actualizar_brigadista("comunidad", new_value, $(this).attr("b_id"))
         }
     });
-    $('.municipio').editable({
+    $('.primaria').editable({
         type: 'select2',
-        value : '',
-        //onblur:'ignore',
-        source: cities,
+        value : 'vacio',
+        source: [
+            {
+                id:"1", 
+                text: "Primer Grado"
+            },
+            {
+                id:"2", 
+                text: "Segundo Grado"
+            },
+            {
+                id:"3", 
+                text: "Tercer Grado"
+            },
+            {
+                id:"4", 
+                text: "Cuarto Grado"
+            },
+            {
+                id:"5", 
+                text: "Quinto Grado"
+            },
+            {
+                id:"6", 
+                text: "Sexto Grado"
+            },
+        ],
         select2: {
             'width': 140
         },
         success: function(res, new_value){
-            
+            actualizar_brigadista("primaria", new_value, $(this).attr("b_id"))
         }
     });
-
-    $('.centro_salud').editable({
+    $('.secundaria').editable({
         type: 'select2',
-        value : '',
-        //onblur:'ignore',
-        source: cities,
+        value : 'opcion',
+        source: [
+            {
+                id:"7", 
+                text: "Primer Año"
+            },
+            {
+                id:"8", 
+                text: "Segundo Año"
+            },
+            {
+                id:"9", 
+                text: "Tercer Año"
+            },
+            {
+                id:"10", 
+                text: "Cuarto Año"
+            },
+            {
+                id:"11", 
+                text: "Quinto Año"
+            }
+        ],
         select2: {
             'width': 140
         },
         success: function(res, new_value){
-            
+            actualizar_brigadista("secundaria", new_value, $(this).attr("b_id"))
         }
     });
-
-    $('.region').editable({
-        type: 'select2',
-        value : '',
-        //onblur:'ignore',
-        source: cities,
-        select2: {
-            'width': 140
-        },
+    $('.tecnico').editable({
+        type: 'text',
+        name: 'valor_tecnico',
         success: function(res, new_value){
-            
+            actualizar_brigadista("tecnico", new_value, $(this).attr("b_id"))
         }
     });
-
-    $('.sector').editable({
+    $('.universidad').editable({
+        type: 'text',
+        name: 'valor_universidad',
+        success: function(res, new_value){
+            actualizar_brigadista("universidad", new_value, $(this).attr("b_id"))
+        }
+    });
+    $('.otro').editable({
+        type: 'text',
+        name: 'valor_otro',
+        success: function(res, new_value){
+            actualizar_brigadista("valor_otro", new_value, $(this).attr("b_id"))
+        }
+    });
+    
+    $('.escolaridad').editable({
         type: 'select2',
         value : '',
-        //onblur:'ignore',
-        source: cities,
+        source: ["primaria", "secundaria", "tecnico", "universidad", "otro"],
         select2: {
             'width': 140
         },
         success: function(res, new_value){
-            
+            actualizar_brigadista("escolaridad", new_value, $(this).attr("b_id"))
         }
+    });
+    $('.escolaridad').on('shown', function(e, editable) {
+        $(document).on('change', editable, function() {
+                    
+            var new_value = editable.input.$input[0].value;
+    
+            if (new_value == 'primaria') {
+                $(".div-primaria").removeClass("hide")
+                $(".div-secundaria").addClass("hide")
+                $(".div-tecnico").addClass("hide")
+                $(".div-universidad").addClass("hide")
+                $(".div-otros-estudios").addClass("hide")
+            }
+            if (new_value == 'secundaria') {
+                $(".div-primaria").addClass("hide")
+                $(".div-secundaria").removeClass("hide")
+                $(".div-tecnico").addClass("hide")
+                $(".div-universidad").addClass("hide")
+                $(".div-otros-estudios").addClass("hide")
+            }
+            if (new_value == 'tecnico') {
+                $(".div-primaria").addClass("hide")
+                $(".div-secundaria").addClass("hide")
+                $(".div-tecnico").removeClass("hide")
+                $(".div-universidad").addClass("hide")
+                $(".div-otros-estudios").addClass("hide")
+            }
+            if (new_value == 'universidad') {
+                $(".div-primaria").addClass("hide")
+                $(".div-secundaria").addClass("hide")
+                $(".div-tecnico").addClass("hide")
+                $(".div-universidad").removeClass("hide")
+                $(".div-otros-estudios").addClass("hide")
+            }
+            if (new_value == 'otro') {
+                $(".div-primaria").addClass("hide")
+                $(".div-secundaria").addClass("hide")
+                $(".div-tecnico").addClass("hide")
+                $(".div-universidad").addClass("hide")
+                $(".div-otros-estudios").removeClass("hide")
+            }
+        });
     });
 
     
