@@ -197,6 +197,22 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-3">
+                <div class="">
+                    <label class="control-label no-padding-right" for="form-field-1"> Puestos de Salud </label>
+            
+                    <div class="">
+                        <div>
+                            <select class="chosen-select form-control" id="puestos_de_salud" name="puestos_de_salud">
+                                <option value="">  </option>
+                                {% for puesto in puestos_de_salud %}
+                                    <option value="{{ puesto.id }}">{{ puesto.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="clearfix form-actions">
             <div class="col-md-offset-3 col-md-9">
