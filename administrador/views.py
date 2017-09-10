@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from temba_client.v2 import TembaClient
 from django.core.urlresolvers import reverse
-from unicef_app.connect_to_rapidpro import connect_to_client, obtener_token_brigadistas, obtener_token_embarazadas
+from unicef_app.connect_to_rapidpro import connect_to_client, TOKEN_BRIGADISTA, TOKEN_EMBARAZADA
 from .models import Region, CentroDeSalud, Municipio, Comunidad, LlaveValor, PuestoDeSalud
 import collections
 # Create your views here.
@@ -32,7 +32,7 @@ def agregar_embarazada(request):
 @login_required
 def modificar_embarazada(request):
     client = connect_to_client()
-    lista_de_embarazadas = client.get_contacts(group=obtener_token_embarazadas())
+    lista_de_embarazadas = client.get_contacts(group=TOKEN_EMBARAZADA)
     query_list = [embarazada.name for embarazada in lista_de_embarazadas.all() if "alvarez" in embarazada.fields["apellido"].lower() ]
     comunidades = Comunidad.objects.all()
     comunidades = [{ "id": comunidad.id, "text": comunidad.nombre} for comunidad in comunidades ]
@@ -135,7 +135,7 @@ def retornar_nivel_de_escolaridad(escolaridad, nivel_de_escolaridad):
         
 def filtrar(argumentos):
     client = connect_to_client()
-    lista_de_embarazadas = client.get_contacts(group=obtener_token_embarazadas()).all()
+    lista_de_embarazadas = client.get_contacts(group=TOKEN_EMBARAZADA).all()
     if argumentos.get("region"):
         lista_de_embarazadas = filter(
                 lambda x: argumentos["region"].lower() in x.fields["region"].lower(),
@@ -281,7 +281,7 @@ class ajax_agregar_embarazada(TemplateView):
             
             data= {
                 "name": nombres + " " + apellidos,
-                "groups": [obtener_token_embarazadas()],
+                "groups": [TOKEN_EMBARAZADA],
                 "urns": [],
                 "fields": {
                     'nombre': nombres,
@@ -382,7 +382,7 @@ def agregar_brigadista(request):
 @login_required
 def modificar_brigadista(request):
     client = connect_to_client()
-    lista_de_brigadistas = client.get_contacts(group=obtener_token_brigadistas())
+    lista_de_brigadistas = client.get_contacts(group=TOKEN_BRIGADISTA)
     comunidades = Comunidad.objects.all()
     comunidades = [{ "id": comunidad.id, "text": comunidad.nombre} for comunidad in comunidades ]
     contexto = {
@@ -418,7 +418,7 @@ class ajax_agregar_brigadista(TemplateView):
             
             data= {
                 "name": nombres + " "  + apellidos,
-                "groups": [obtener_token_brigadistas()],
+                "groups": [TOKEN_BRIGADISTA],
                 "fields": {
                     'nombre': nombres,
                     'apellido': apellidos,
