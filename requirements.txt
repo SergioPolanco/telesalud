@@ -3,3 +3,4 @@ requests
 rapidpro-python
 gunicorn
 pandas
+xlsxwriter
