@@ -123,6 +123,7 @@ USE_TZ = True
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/login/logout-user/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'play/static_root')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
