@@ -303,11 +303,10 @@ class ajax_agregar_embarazada(TemplateView):
                     'puesto_de_salud': puesto_de_salud.nombre
                 }
             }
-            try:
-                client.create_contact(name=data["name"], language=None, urns=None, fields=data["fields"], groups=data["groups"])
-                message = {'status':True, 'mensaje': 'Excelente! Datos ingresados satisfactoriamente.'}
-            except expression as identifier:
-                message = {'status':False,'mensaje': 'Ha ocurrido un error'}
+
+            client.create_contact(name=data["name"], language=None, urns=None, fields=data["fields"], groups=data["groups"])
+            message = {'status':True, 'mensaje': 'Excelente! Datos ingresados satisfactoriamente.'}
+            #message = {'status':False,'mensaje': 'Ha ocurrido un error'}
                 
             return HttpResponse(json.dumps(message), content_type =  "application/json")
 
