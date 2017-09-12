@@ -25,7 +25,7 @@ SECRET_KEY = '$fwtzs*bhhxrw*&v3lq1)$&b!1jlbc*@k)!&-j!0#@xj+28086'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "130.211.208.53", "104.154.196.212", "192.168.1.3"]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0", "127.0.0.1", "130.211.208.53", "104.154.196.212", "192.168.1.3", "192.168.1.11"]
 
 
 # Application definition
@@ -123,8 +123,8 @@ USE_TZ = True
 LOGIN_URL = '/login/'
 LOGOUT_URL = '/login/logout-user/'
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'play/static_root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static', '')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+#STATICFILES_DIRS = (
+#    os.path.join(BASE_DIR, 'static'),
+#)
