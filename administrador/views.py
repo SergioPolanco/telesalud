@@ -11,9 +11,11 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from temba_client.v2 import TembaClient
 from django.core.urlresolvers import reverse
+from django.core.files import File
 from unicef_app.connect_to_rapidpro import connect_to_client, TOKEN_BRIGADISTA, TOKEN_EMBARAZADA
 from .models import Region, CentroDeSalud, Municipio, Comunidad, LlaveValor, PuestoDeSalud
 import collections
+from unicef_app import settings
 # Create your views here.
 
 @login_required
@@ -680,3 +682,21 @@ class monitoreo_postparto_hijo_post(TemplateView):
                 message = {'status':True,'mensaje': 'Gracias!'}
             
             return HttpResponse(json.dumps(message), content_type =  "application/json")
+
+#################################################################################################
+
+@login_required
+def respaldo(request):
+    print(settings.DATABASES['default']['NAME'])
+    return render(request, 'admin/respaldo.html')
+
+@login_required
+def descargar_respaldo(resquest):
+    print("entro")
+    db_path = settings.DATABASES['default']['NAME']
+    dbfile = File(open(db_path, "rb"))
+    response = HttpResponse(dbfile, content_type='application/x-sqlite3')
+    response['Content-Disposition'] = 'attachment; filename=respaldo_telesalud.sqlite3'
+    response['Content-Length'] = dbfile.size
+
+    return response

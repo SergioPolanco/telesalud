@@ -22,6 +22,8 @@ urlpatterns = [
     url(r'^actualizar_embarazada/$', views.ajax_actualizar_embarazadas.as_view()),
     url(r'^embarazada_durante_parto/$', views.monitoreo_durante_parto_post.as_view()),
     url(r'^embarazada_postparto_madre/$', views.monitoreo_postparto_madre_post.as_view()),
-    url(r'^embarazada_postparto_hijo/$', views.monitoreo_postparto_hijo_post.as_view())
+    url(r'^embarazada_postparto_hijo/$', views.monitoreo_postparto_hijo_post.as_view()),
+    url(r'^respaldo/$', views.respaldo, name="respaldoView"),
+    url(r'^descargar_respaldo/$', views.descargar_respaldo, name='descargar_respaldo_url')
     
 ]
