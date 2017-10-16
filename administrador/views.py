@@ -517,18 +517,22 @@ class ajax_actualizar_brigadista(TemplateView):
 @login_required
 def monitoreo_durante_embarazo(request, id):
     client = connect_to_client()
-    #client.create_broadcast(text="asdvsadva", contacts=["53eaed2e-6f76-4c11-b3b5-f2ea9ec139cc"])
-    
     embarazada = client.get_contacts(uuid=id)
     contexto = {
         'embarazada': embarazada.first()
     }
     return render(request, 'admin/monitoreo_embarazo.html', context=contexto)
 
+def enviar_mensaje_de_emergencia(comunidad):
+    client = connect_to_client()
+    comunidad = Comunidad.objects.get(nombre=comunidad)
+    puesto_de_salud = PuestoDeSalud.objects.get(nombre=comunidad.puesto_de_salud)
+    puesto_de_salud_rapid_pro = client.get_contacts(urn="tel:+505"+puesto_de_salud.telefono).first()
+    return puesto_de_salud_rapid_pro.uuid
+    
 class monitoreo_durante_embarazo_post(TemplateView):
     def post(self, request, *args, **kwargs):
         if request.is_ajax() and request.method == "POST":
-            print("entro al post")
             client = connect_to_client()
             respuestas = [
                 request.POST.get('res_radio_1'),
@@ -543,7 +547,8 @@ class monitoreo_durante_embarazo_post(TemplateView):
             
             if any(respuesta == "si" for respuesta in respuestas):
                 nombre_embarazada = request.POST.get('nombre_embarazada')
-                client.create_broadcast(text="La embarazada con nombre " + nombre_embarazada + " tiene problemas con el embarazo.", contacts=["53eaed2e-6f76-4c11-b3b5-f2ea9ec139cc"])
+                comunidad = request.POST.get('comunidad')
+                client.create_broadcast(text="La embarazada con nombre " + nombre_embarazada + " tiene problemas con el embarazo.", contacts=[enviar_mensaje_de_emergencia(comunidad)])
                 message = {'status':False,'mensaje': 'Se ha notificado al centro de salud'}
             else:
                 message = {'status':True,'mensaje': 'Gracias!'}
@@ -567,10 +572,10 @@ class monitoreo_salida_comunidad_post(TemplateView):
         if request.is_ajax() and request.method == "POST":
             client = connect_to_client()
             respuesta = request.POST.get('res_radio_1')
-            print(request.POST)
             nombre_embarazada = request.POST.get('nombre_embarazada')
+            comunidad = request.POST.get('comunidad')
             if respuesta == "no":
-                client.create_broadcast(text="La embarazada con nombre " + nombre_embarazada + " no se presento al centro de salud.", contacts=["53eaed2e-6f76-4c11-b3b5-f2ea9ec139cc"])
+                client.create_broadcast(text="La embarazada con nombre " + nombre_embarazada + " no se presento al centro de salud.", contacts=[enviar_mensaje_de_emergencia(comunidad)])
                 message = {'status':False,'mensaje': 'Se ha notificado al centro de salud'}
             else:
                 message = {'status':True,'mensaje': 'Gracias!'}
@@ -589,7 +594,6 @@ def monitoreo_durante_parto(request, id):
 class monitoreo_durante_parto_post(TemplateView):
     def post(self, request, *args, **kwargs):
         if request.is_ajax() and request.method == "POST":
-            print("entro al post")
             client = connect_to_client()
             respuestas = [
                 request.POST.get('res_radio_1'),
@@ -603,7 +607,8 @@ class monitoreo_durante_parto_post(TemplateView):
             
             if any(respuesta == "si" for respuesta in respuestas):
                 nombre_embarazada = request.POST.get('nombre_embarazada')
-                client.create_broadcast(text="La embarazada con nombre " + nombre_embarazada + " tiene problemas con el parto.", contacts=["53eaed2e-6f76-4c11-b3b5-f2ea9ec139cc"])
+                comunidad = request.POST.get('comunidad')
+                client.create_broadcast(text="La embarazada con nombre " + nombre_embarazada + " tiene problemas con el parto.", contacts=[enviar_mensaje_de_emergencia(comunidad)])
                 message = {'status':False,'mensaje': 'Se ha notificado al centro de salud'}
             else:
                 message = {'status':True,'mensaje': 'Gracias!'}
@@ -624,7 +629,6 @@ def monitoreo_postparto_madre(request, id):
 class monitoreo_postparto_madre_post(TemplateView):
     def post(self, request, *args, **kwargs):
         if request.is_ajax() and request.method == "POST":
-            print("entro al post")
             client = connect_to_client()
             respuestas = [
                 request.POST.get('res_radio_1'),
@@ -638,7 +642,8 @@ class monitoreo_postparto_madre_post(TemplateView):
             
             if any(respuesta == "si" for respuesta in respuestas):
                 nombre_embarazada = request.POST.get('nombre_embarazada')
-                client.create_broadcast(text="La embarazada con nombre " + nombre_embarazada + " tiene problemas postparto.", contacts=["53eaed2e-6f76-4c11-b3b5-f2ea9ec139cc"])
+                comunidad = request.POST.get('comunidad')
+                client.create_broadcast(text="La embarazada con nombre " + nombre_embarazada + " tiene problemas postparto.", contacts=[enviar_mensaje_de_emergencia(comunidad)])
                 message = {'status':False,'mensaje': 'Se ha notificado al centro de salud'}
             else:
                 message = {'status':True,'mensaje': 'Gracias!'}
@@ -656,10 +661,9 @@ def monitoreo_postparto_hijo(request, id):
     return render(request, 'admin/monitoreo_postparto_hijo.html', context=contexto)
     
 
-class monitoreo_postparto_hijo_post(TemplateView):
+class monitoreo_postparto_hijo_post(TmplateView):
     def post(self, request, *args, **kwargs):
         if request.is_ajax() and request.method == "POST":
-            print("entro al post")
             client = connect_to_client()
             respuestas = [
                 request.POST.get('res_radio_1'),
@@ -676,7 +680,8 @@ class monitoreo_postparto_hijo_post(TemplateView):
             
             if any(respuesta == "si" for respuesta in respuestas):
                 nombre_embarazada = request.POST.get('nombre_embarazada')
-                client.create_broadcast(text="El hijo de la embarazada con nombre " + nombre_embarazada + " tiene problemas postparto.", contacts=["53eaed2e-6f76-4c11-b3b5-f2ea9ec139cc"])
+                comunidad = request.POST.get('comunidad')
+                client.create_broadcast(text="El hijo de la embarazada con nombre " + nombre_embarazada + " tiene problemas postparto.", contacts=[enviar_mensaje_de_emergencia(comunidad)])
                 message = {'status':False,'mensaje': 'Se ha notificado al centro de salud'}
             else:
                 message = {'status':True,'mensaje': 'Gracias!'}

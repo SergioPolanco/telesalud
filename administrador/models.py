@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from unicef_app.connect_to_rapidpro import connect_to_client, TOKEN_PUESTOS_DE_SALUD, TOKEN_EMBARAZADA
 
 # Create your models here.
 
@@ -51,6 +52,21 @@ class PuestoDeSalud(models.Model):
     
     def __unicode__(self):
         return self.nombre
+    
+    def save(self, *args, **kwargs):
+        client = connect_to_client()
+        data= {
+            "name": self.nombre,
+            "groups": [TOKEN_PUESTOS_DE_SALUD],
+            "urns": [],
+            "fields": {
+                'nombre': self.nombre,
+                'celular_personal': self.telefono,
+                'empresa_telefonica': self.operadora,
+            }
+        }
+        client.create_contact(name=data["name"], language=None, urns=["tel:+505"+self.telefono], fields=data["fields"], groups=data["groups"])
+        return super(PuestoDeSalud, self).save(*args, **kwargs)
 
 class Comunidad(models.Model):
     class Meta():

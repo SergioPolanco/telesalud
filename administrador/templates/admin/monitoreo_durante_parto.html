@@ -115,6 +115,7 @@
                 {% csrf_token %}
                 <div class="row">
                     <input type="hidden" name="nombre_embarazada" value="{{ embarazada.name }}"/>
+                    <input type="hidden" name="comunidad" value="{{ embarazada.fields.comunidad|safe }}"/>
                     <div class="col-lg-4">
                         <label class="bolder blue">1). El niño no nace, el parto no se da o parto prolongado</label>
                         <div class="radio">
