@@ -252,7 +252,7 @@ def filtrar(argumentos):
                 lambda x: argumentos["numero_de_embarazos"].lower() == x.fields["numero_de_embarazos"].lower(),
                 lista_de_embarazadas
         )
-        
+    print(list(lista_de_embarazadas))
     return lista_de_embarazadas
         
 class ajax_agregar_embarazada(TemplateView):
