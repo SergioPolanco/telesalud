@@ -139,6 +139,7 @@ def filtrar(argumentos):
     client = connect_to_client()
     lista_de_embarazadas = client.get_contacts(group=TOKEN_EMBARAZADA).all()
     print(list(lista_de_embarazadas))
+    print(argumentos)
     if argumentos.get("region"):
         lista_de_embarazadas = filter(
                 lambda x: argumentos["region"].lower() in x.fields["region"].lower(),
