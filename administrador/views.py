@@ -661,7 +661,7 @@ def monitoreo_postparto_hijo(request, id):
     return render(request, 'admin/monitoreo_postparto_hijo.html', context=contexto)
     
 
-class monitoreo_postparto_hijo_post(TmplateView):
+class monitoreo_postparto_hijo_post(TemplateView):
     def post(self, request, *args, **kwargs):
         if request.is_ajax() and request.method == "POST":
             client = connect_to_client()
