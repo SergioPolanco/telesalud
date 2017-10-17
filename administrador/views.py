@@ -138,6 +138,7 @@ def retornar_nivel_de_escolaridad(escolaridad, nivel_de_escolaridad):
 def filtrar(argumentos):
     client = connect_to_client()
     lista_de_embarazadas = client.get_contacts(group=TOKEN_EMBARAZADA).all()
+    print(list(lista_de_embarazadas))
     if argumentos.get("region"):
         lista_de_embarazadas = filter(
                 lambda x: argumentos["region"].lower() in x.fields["region"].lower(),
