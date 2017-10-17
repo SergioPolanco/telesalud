@@ -239,7 +239,8 @@ def filtrar(argumentos):
                 lista_de_embarazadas
         )
     
-    if argumentos.get("discapacidad"):
+    if argumentos.get("discapacidad") != 'ninguna':
+        print("entro a discapacidad")
         lista_de_embarazadas = filter(
                 lambda x: argumentos["discapacidad"].lower() == x.fields["discapacidad"].lower(),
                 lista_de_embarazadas
