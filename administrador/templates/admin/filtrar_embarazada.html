@@ -24,7 +24,7 @@
                             <select class="chosen-select form-control" id="region" name="region" data-placeholder="Choose a State...">
                                 <option value="">  </option>
                                 {% for region in regiones %}
-                                    <option value="{{ region.id }}">{{ region.nombre }}</option>
+                                    <option value="{{ region.nombre }}">{{ region.nombre }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -40,7 +40,7 @@
                             <select class="chosen-select form-control" id="municipio" name="municipio"  data-placeholder="Choose a State...">
                                 <option value="">  </option>
                                 {% for municipio in municipios %}
-                                    <option value="{{ municipio.id }}">{{ municipio.nombre }}</option>
+                                    <option value="{{ municipio.nombre }}">{{ municipio.nombre }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -56,7 +56,7 @@
                             <select class="chosen-select form-control" id="centro_salud" name="centro_salud" data-placeholder="Choose a State...">
                                 <option value="">  </option>
                                 {% for centro_salud in centros_de_salud %}
-                                    <option value="{{ centro_salud.id }}">{{ centro_salud.nombre }}</option>
+                                    <option value="{{ centro_salud.nombre }}">{{ centro_salud.nombre }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -72,7 +72,7 @@
                             <select class="chosen-select form-control" id="comunidad" name="comunidad" data-placeholder="Choose a State...">
                                 <option value="">  </option>
                                 {% for comunidad in comunidades %}
-                                    <option value="{{ comunidad.id }}">{{ comunidad.nombre }}</option>
+                                    <option value="{{ comunidad.nombre }}">{{ comunidad.nombre }}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -206,7 +206,7 @@
                             <select class="chosen-select form-control" id="puestos_de_salud" name="puestos_de_salud">
                                 <option value="">  </option>
                                 {% for puesto in puestos_de_salud %}
-                                    <option value="{{ puesto.id }}">{{ puesto.nombre }}</option>
+                                    <option value="{{ puesto.nombre }}">{{ puesto.nombre }}</option>
                                 {% endfor %}
                             </select>
                         </div>

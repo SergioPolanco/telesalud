@@ -47,12 +47,13 @@ def modificar_embarazada(request):
 @login_required
 def vista_filtrar_embarazada(request):
     print(request.method)
+    comunidades = Comunidad.objects.all()
+    municipios = Municipio.objects.all()
+    centros_de_salud = CentroDeSalud.objects.all()
+    regiones = Region.objects.all()
+    puestos_de_salud = PuestoDeSalud.objects.all()
     if request.method == "GET":
-        comunidades = Comunidad.objects.all()
-        municipios = Municipio.objects.all()
-        centros_de_salud = CentroDeSalud.objects.all()
-        regiones = Region.objects.all()
-        puestos_de_salud = PuestoDeSalud.objects.all()
+        
         contexto = {
             "comunidades": comunidades,
             "municipios": municipios,
@@ -64,6 +65,11 @@ def vista_filtrar_embarazada(request):
     else:
         lista_de_embarazadas = filtrar(request.POST)
         contexto = {
+            "comunidades": comunidades,
+            "municipios": municipios,
+            "centros_de_salud": centros_de_salud,
+            "regiones": regiones,
+            "puestos_de_salud": puestos_de_salud,
             'lista_de_embarazadas': lista_de_embarazadas
         }
         return render(request, 'admin/filtrar_embarazada.html', context = contexto)
@@ -142,22 +148,22 @@ def filtrar(argumentos):
     print(argumentos)
     if argumentos.get("region"):
         lista_de_embarazadas = filter(
-                lambda x: argumentos["region"].lower() in x.fields["region"].lower(),
+                lambda x: argumentos["region"].lower() == x.fields["region"].lower(),
                 lista_de_embarazadas
         )
     if argumentos.get("municipio"):
         lista_de_embarazadas = filter(
-                lambda x: argumentos["municipio"].lower() in x.fields["municipio"].lower(),
+                lambda x: argumentos["municipio"].lower() == x.fields["municipio"].lower(),
                 lista_de_embarazadas
         )
     if argumentos.get("centro_salud"):
         lista_de_embarazadas = filter(
-                lambda x: argumentos["centro_salud"].lower() in x.fields["centro_de_salud"].lower(),
+                lambda x: argumentos["centro_salud"].lower() == x.fields["centro_de_salud"].lower(),
                 lista_de_embarazadas
         )
-    if argumentos.get("region"):
+    if argumentos.get("comunidad"):
         lista_de_embarazadas = filter(
-                lambda x: argumentos["comunidad"].lower() in x.fields["comunidad"].lower(),
+                lambda x: argumentos["comunidad"].lower() == x.fields["comunidad"].lower(),
                 lista_de_embarazadas
         )
     if argumentos.get("puestos_de_salud"):
