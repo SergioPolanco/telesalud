@@ -77,6 +77,7 @@ def vista_filtrar_embarazada(request):
 @login_required
 def exportar_embarazadas_a_excel(request):
     if request.method == "POST":
+        print("linea 80")
         data = [embarazada.fields for embarazada in filtrar(request.POST)]
         
         data = [
