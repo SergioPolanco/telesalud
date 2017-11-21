@@ -79,7 +79,7 @@ def exportar_embarazadas_a_excel(request):
     if request.method == "POST":
         print("linea 80")
         data = [embarazada.fields for embarazada in filtrar(request.POST)]
-        
+        print("linea 82")
         data = [
             retornar_data_ordenada({
                 "Nombre": embarazada["nombre"],
@@ -101,6 +101,7 @@ def exportar_embarazadas_a_excel(request):
             })
             for embarazada in data
         ]
+        print("linea 104")
         sio = StringIO()
         print("entro al post de exportar")
         PandasDataFrame = pd.DataFrame(data)
