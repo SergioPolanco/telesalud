@@ -139,6 +139,7 @@ def retornar_data_ordenada(data):
 
 
 def retornar_nivel_de_escolaridad(escolaridad, nivel_de_escolaridad):
+    print("Nivel de escolaridad")
     if escolaridad == "primaria" or escolaridad == "secundaria":
         valor_escolaridad = LlaveValor.objects.get(llave=nivel_de_escolaridad)
         return valor_escolaridad.valor
