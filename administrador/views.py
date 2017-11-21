@@ -117,6 +117,7 @@ def exportar_embarazadas_a_excel(request):
         return response
 
 def retornar_data_ordenada(data):
+    print("entro a data ordenada")
     data_ordenada = collections.OrderedDict()
     data_ordenada["Nombre"] = data["Nombre"]
     data_ordenada["Apellido"] = data["Apellido"]
