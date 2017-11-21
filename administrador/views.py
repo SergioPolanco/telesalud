@@ -91,7 +91,7 @@ def exportar_embarazadas_a_excel(request):
                 "Comunidad": embarazada["comunidad"],
                 "Region": embarazada["region"],
                 "Municipio": embarazada["municipio"],
-                "Discapacidad": "Ninguna" if embarazada["discapacidad"] == "0" else embarazada["discapacidad"],
+                "Discapacidad": "Ninguna" if embarazada["discapacidad"] == "ninguna" else embarazada["discapacidad"],
                 "Empresa Telefonica": embarazada["empresa_telefonica"],
                 "Escolaridad": embarazada["escolaridad"],
                 "Nivel de Escolaridad": retornar_nivel_de_escolaridad(embarazada["escolaridad"], embarazada["valor_de_la_escolaridad"]),
