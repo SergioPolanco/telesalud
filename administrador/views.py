@@ -101,6 +101,7 @@ def exportar_embarazadas_a_excel(request):
             for embarazada in data
         ]
         sio = StringIO()
+        print("entro al post de exportar")
         PandasDataFrame = pd.DataFrame(data)
         PandasWriter = pd.ExcelWriter(sio, engine='xlsxwriter')
         PandasDataFrame.to_excel(PandasWriter, sheet_name="Embarazadas", index=False)
